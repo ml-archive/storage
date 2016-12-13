@@ -1,5 +1,5 @@
 import XCTest
-@testable import storageTests
+@testable import StorageTests
 
 XCTMain([
      testCase(StorageTests.allTests),
