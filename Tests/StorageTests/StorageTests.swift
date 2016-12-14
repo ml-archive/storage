@@ -3,73 +3,84 @@ import XCTest
 
 class StorageTests: XCTestCase {
     static var allTests = [
-        ("testSettingsInit", testSettingsInit),
-        ("testSettingsInitNil", testSettingsInitNil),
-        ("testSettingsValidate", testSettingsValidate),
-        ("testSettingsValidateFailed", testSettingsValidateFailed),
-        ("testSettingsGetFilePath", testSettingsGetFilePath),
-        ("testSettingsGetFilePathFailed", testSettingsGetFilePathFailed)
+        ("testUploadEntityInit", testUploadEntityInit),
+        ("testUploadEntityInitNil", testUploadEntityInitNil),
+        ("testUploadEntityValidate", testUploadEntityValidate),
+        ("testUploadEntityValidateFailed", testUploadEntityValidateFailed),
+        ("testUploadEntityGetFilePath", testUploadEntityGetFilePath),
+        ("testUploadEntityGetFilePathFailed", testUploadEntityGetFilePathFailed)
     ]
 
-    func testSettingsInit() {
-        let settings = Settings(
+    func testUploadEntityInit() {
+        expectNoThrow() {
+            let entity = try UploadEntity(
+                bytes: "dEadBeef",
+                fileName: "test_image",
+                fileExtension: "png",
+                folder: "images"
+            )
+            
+            XCTAssertNotNil(entity.fileName)
+            XCTAssertNotNil(entity.folder)
+            XCTAssertNotNil(entity.fileExtension)
+            
+            XCTAssertEqual(entity.fileName, "test_image")
+            XCTAssertEqual(entity.fileExtension, "png")
+            XCTAssertEqual(entity.folder, "images")
+        }
+    }
+    
+    func testUploadEntityInitNil() {
+        expectNoThrow() {
+            let entity = try UploadEntity(bytes: "dEadBeef")
+            
+            XCTAssertNil(entity.fileName)
+            XCTAssertNil(entity.fileExtension)
+            XCTAssertNil(entity.folder)
+        }
+    }
+    
+    func testUploadEntityValidate() {
+        expectNoThrow() {
+            let entity = try UploadEntity(
+                bytes: "dEadBeef",
+                fileName: "test_image",
+                fileExtension: "png",
+                folder: "images"
+            )
+            
+            try entity.verify()
+        }
+    }
+    
+    func testUploadEntityValidateFailed() {
+        let entity = try! UploadEntity(
+            bytes: "dEadBeef",
+            fileName: "test_image",
+            folder: "images"
+        )
+        
+        expect(toThrow: UploadEntity.Error.missingFileExtension, from: entity.getFilePath)
+    }
+    
+    func testUploadEntityGetFilePath() {
+        let entity = try! UploadEntity(
+            bytes: "dEadBeef",
             fileName: "test_image",
             fileExtension: "png",
             folder: "images"
         )
         
-        XCTAssertNotNil(settings.fileName)
-        XCTAssertNotNil(settings.folder)
-        XCTAssertNotNil(settings.fileExtension)
-        
-        XCTAssertEqual(settings.fileName, "test_image")
-        XCTAssertEqual(settings.fileExtension, "png")
-        XCTAssertEqual(settings.folder, "images")
+        expect(entity.getFilePath, toReturn: "images/test_image.png")
     }
     
-    func testSettingsInitNil() {
-        let settings = Settings()
-        
-        XCTAssertNil(settings.fileName)
-        XCTAssertNil(settings.fileExtension)
-        XCTAssertNil(settings.folder)
-    }
-    
-    func testSettingsValidate() {
-        let settings = Settings(
-            fileName: "test_image",
-            fileExtension: "png",
-            folder: "images"
-        )
-        
-        expectNoThrow(settings.verify)
-    }
-    
-    func testSettingsValidateFailed() {
-        let settings = Settings(
-            fileName: "test_image",
-            folder: "images"
-        )
-        
-        expect(toThrow: Settings.Error.missingFileExtension, from: settings.getFilePath)
-    }
-    
-    func testSettingsGetFilePath() {
-        let settings = Settings(
-            fileName: "test_image",
-            fileExtension: "png",
-            folder: "images"
-        )
-        
-        expect(settings.getFilePath, toReturn: "images/test_image.png")
-    }
-    
-    func testSettingsGetFilePathFailed() {
-        let settings = Settings(
+    func testUploadEntityGetFilePathFailed() {
+        let entity = try! UploadEntity(
+            bytes: "dEadBeef",
             fileExtension: "jpg",
             folder: "images"
         )
         
-        expect(toThrow: Settings.Error.missingFilename, from: settings.getFilePath)
+        expect(toThrow: UploadEntity.Error.missingFilename, from: entity.getFilePath)
     }
 }
