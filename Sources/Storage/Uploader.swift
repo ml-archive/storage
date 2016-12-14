@@ -1,3 +1,4 @@
+import Core
 import Foundation
 
 public protocol UploadPathBuilder {
@@ -13,19 +14,7 @@ extension UploadPathBuilder {
     }
 }
 
-enum PathTemplate {
-    case literal(String)
-    case alias(ConfigurablePathBuilder.Keyword)
-}
-
 public final class ConfigurablePathBuilder: UploadPathBuilder {
-    public enum Keyword: String {
-        case fileName       = "$fileName"
-        case fileExtension  = "$fileExtension"
-        case folder         = "$folder"
-        case mimeFolder     = "$mimeFolder"
-    }
-    
     var template: String
     
     public init(template: String) {
@@ -39,40 +28,33 @@ public final class ConfigurablePathBuilder: UploadPathBuilder {
         
         if let fileName = entity.fileName {
             result = result.replacingOccurrences(
-                of: Keyword.fileName.rawValue,
+                of: Template.Alias.fileName.rawValue,
                 with: fileName
             )
         }
         
         if let fileExtension = entity.fileExtension {
             result = result.replacingOccurrences(
-                of: Keyword.fileExtension.rawValue,
+                of: Template.Alias.fileExtension.rawValue,
                 with: fileExtension
             )
         }
         
         if let folder = entity.folder {
             result = result.replacingOccurrences(
-                of: Keyword.folder.rawValue,
+                of: Template.Alias.folder.rawValue,
                 with: folder
             )
         }
 
         if let mime = entity.mime, let mimeFolder = generateFolder(for: mime) {
             result = result.replacingOccurrences(
-                of: Keyword.mimeFolder.rawValue,
+                of: Template.Alias.mimeFolder.rawValue,
                 with: mimeFolder
             )
         }
         
         return result
-    }
-}
-
-extension ConfigurablePathBuilder {
-    func compile(template stringTemplate: String) {
-        // "$folder/$mimeFolder/$fileName.$fileExtension"
-        let bytes = stringTemplate.toBytes()
     }
 }
 

@@ -10,6 +10,10 @@ class PathBuilderTests: XCTestCase {
     func testConfigurableBuilderInit() {
     }
     
+    func testTemplate() {
+        let template = try! Template.compile("$folder/$mimeFolder/$fileName.$fileExtension")
+    }
+    
     func testConfigurableBuilder() {
         let template = "$folder/$mimeFolder/$fileName.$fileExtension"
         let entity = try! UploadEntity(
