@@ -69,6 +69,13 @@ public final class ConfigurablePathBuilder: UploadPathBuilder {
     }
 }
 
+extension ConfigurablePathBuilder {
+    func compile(template stringTemplate: String) {
+        // "$folder/$mimeFolder/$fileName.$fileExtension"
+        let bytes = stringTemplate.toBytes()
+    }
+}
+
 public protocol Uploader {
     var pathBuilder: UploadPathBuilder { get set }
     

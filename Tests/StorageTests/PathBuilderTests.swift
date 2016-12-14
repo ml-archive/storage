@@ -3,8 +3,8 @@ import XCTest
 
 class PathBuilderTests: XCTestCase {
     static var allTests = [
-        ("testConfigurableBuilder", testConfigurableBuilder),
-        ("testConfigurableBuilderInit", testConfigurableBuilderInit)
+        ("testConfigurableBuilderInit", testConfigurableBuilderInit),
+        ("testConfigurableBuilder", testConfigurableBuilder)
     ]
     
     func testConfigurableBuilderInit() {
