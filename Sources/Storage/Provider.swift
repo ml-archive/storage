@@ -1,5 +1,15 @@
-public protocol Provider {
-    var pathBuilder: UploadPathBuilder { get set }
+import Vapor
+
+public final class Provider: Vapor.Provider {
+    public var provided: Providable
     
-    func upload(entity: UploadEntity) throws -> String
+    public init(config: Config) throws {
+        provided = Providable()
+    }
+    
+    public func afterInit(_ drop: Droplet) {
+    }
+    
+    public func beforeRun(_: Droplet) {
+    }
 }
