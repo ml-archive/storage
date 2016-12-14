@@ -42,11 +42,7 @@ class StorageTests: XCTestCase {
             folder: "images"
         )
         
-        do {
-            try settings.verify()
-        } catch {
-            XCTFail("should not have thrown")
-        }
+        expectNoThrow(settings.verify)
     }
     
     func testSettingsValidateFailed() {
@@ -55,17 +51,7 @@ class StorageTests: XCTestCase {
             folder: "images"
         )
         
-        do {
-            try settings.verify()
-            XCTFail("should have thrown")
-        } catch {
-            guard let error = error as? Settings.Error else {
-                XCTFail("should have thrown `Settings.Error` type")
-                return
-            }
-            
-            XCTAssertEqual(error, Settings.Error.missingFileExtension)
-        }
+        expect(toThrow: Settings.Error.missingFileExtension, from: settings.getFilePath)
     }
     
     func testSettingsGetFilePath() {
@@ -75,14 +61,7 @@ class StorageTests: XCTestCase {
             folder: "images"
         )
         
-        var path = ""
-        do {
-            path = try settings.getFilePath()
-        } catch {
-            XCTFail("should not have thrown: \(error)")
-        }
-        
-        XCTAssertEqual(path, "images/test_image.png")
+        expect(settings.getFilePath, toReturn: "images/test_image.png")
     }
     
     func testSettingsGetFilePathFailed() {
@@ -91,17 +70,7 @@ class StorageTests: XCTestCase {
             folder: "images"
         )
         
-        do {
-            let _ = try settings.getFilePath()
-            XCTFail("getFilePath should have thrown")
-        } catch {
-            guard let error = error as? Settings.Error else {
-                XCTFail("should have thrown `Settings.Error` type")
-                return
-            }
-            
-            XCTAssertEqual(error, Settings.Error.missingFilename)
-        }
+        expect(toThrow: Settings.Error.missingFilename, from: settings.getFilePath)
     }
     
 }
