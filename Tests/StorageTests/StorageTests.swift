@@ -72,5 +72,4 @@ class StorageTests: XCTestCase {
         
         expect(toThrow: Settings.Error.missingFilename, from: settings.getFilePath)
     }
-    
 }
