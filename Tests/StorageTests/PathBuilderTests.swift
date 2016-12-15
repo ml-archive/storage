@@ -11,7 +11,17 @@ class PathBuilderTests: XCTestCase {
     }
     
     func testTemplate() {
-        let _ = try! Template.compile("myapp/$folder/$mimeFolder/$file")
+        let template = try! Template.compile("test/$folder/$fileName.$fileExtension")
+        let entity = try! UploadEntity(
+            bytes: "",
+            fileName: "profileImage",
+            fileExtension: "png",
+            folder: "app",
+            mime: "image/png"
+        )
+        
+        let path = try! template.renderPath(entity: entity)
+        XCTAssertEqual(path, "test/app/profileImage.png")
     }
     
     func testConfigurableBuilder() {

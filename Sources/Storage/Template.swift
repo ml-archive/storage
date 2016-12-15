@@ -42,6 +42,42 @@ extension Template {
         
         return template
     }
+    
+    func renderPath(entity: UploadEntity) throws -> String {
+        var pathBytes: [Byte] = []
+        
+        for part in parts {
+            switch part {
+            case .literal(let bytes):
+                pathBytes += bytes
+            case .alias(let alias):
+                switch alias {
+                //FIXME(Brett): DRY
+                case .file:
+                    break
+                case .fileName:
+                    //FIXME(Brett): throw
+                    guard let fileName = entity.fileName else { break }
+                    pathBytes += fileName.bytes
+                case .fileExtension:
+                    //FIXME(Brett): throw
+                    guard let fileExtension = entity.fileExtension else { break }
+                    pathBytes += fileExtension.bytes
+                case .folder:
+                    guard let folder = entity.folder else { break }
+                    pathBytes += folder.bytes
+                
+                //TODO: looks like template needs a way to correctly generate
+                //the mime folder
+                case .mimeFolder:
+                    guard let mimeFolder = entity.mime else { break }
+                    pathBytes += mimeFolder.bytes
+                }
+            }
+        }
+        
+        return try String(bytes: pathBytes)
+    }
 }
 
 extension Template {
