@@ -37,7 +37,6 @@ extension Template {
         var template = Template(scanner: Scanner(templateString.bytes))
         
         while let part = try template.extractPart() {
-            print(part)
             template.parts.append(part)
         }
         
@@ -86,6 +85,15 @@ extension Template {
             guard let next = current[byte] else { break }
             
             if let value = next.value {
+                if let nextByte = scanner.peek(aheadBy: peeked) {
+                    guard next[nextByte] != nil else {
+                        return .alias(value)
+                    }
+                    partial += byte
+                    current = next
+                    continue
+                }
+                
                 return .alias(value)
             }
             
@@ -97,7 +105,19 @@ extension Template {
         throw Error.invalidAlias(invalidAlias)
     }
     
-    func extractLiteral() -> PathPart {
-        return .literal([scanner.peek() ?? 0])
+    mutating func extractLiteral() -> PathPart {
+        var partial: [Byte] = []
+        var peeked = 0
+        defer { scanner.pop(peeked) }
+        
+        while
+            let byte = scanner.peek(aheadBy: peeked),
+            byte != Byte.dollarSign
+        {
+            peeked += 1
+            partial += byte
+        }
+        
+        return .literal(partial)
     }
 }

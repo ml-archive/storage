@@ -4,6 +4,10 @@ class Trie<ValueType> {
     
     var children: [Trie] = []
     
+    var isLeaf: Bool {
+        return children.count == 0
+    }
+    
     convenience init() {
         self.init(key: 0x00)
     }

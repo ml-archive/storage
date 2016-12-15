@@ -11,7 +11,7 @@ class PathBuilderTests: XCTestCase {
     }
     
     func testTemplate() {
-        let template = try! Template.compile("$folder/$mimeFolder/$fileName.$fileExtension")
+        let _ = try! Template.compile("myapp/$folder/$mimeFolder/$file")
     }
     
     func testConfigurableBuilder() {
