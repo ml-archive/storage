@@ -13,8 +13,7 @@ class UploadEntityTests: XCTestCase {
     
     func testUploadEntityInit() {
         expectNoThrow() {
-            let entity = try UploadEntity(
-                bytes: "dEadBeef",
+            let entity = try FileEntity(
                 fileName: "test_image",
                 fileExtension: "png",
                 folder: "images"
@@ -32,8 +31,9 @@ class UploadEntityTests: XCTestCase {
     
     func testUploadEntityInitNil() {
         expectNoThrow() {
-            let entity = try UploadEntity(bytes: "dEadBeef")
+            let entity = try FileEntity()
             
+            XCTAssertNil(entity.bytes)
             XCTAssertNil(entity.fileName)
             XCTAssertNil(entity.fileExtension)
             XCTAssertNil(entity.folder)
@@ -42,8 +42,7 @@ class UploadEntityTests: XCTestCase {
     
     func testUploadEntityValidate() {
         expectNoThrow() {
-            let entity = try UploadEntity(
-                bytes: "dEadBeef",
+            let entity = try FileEntity(
                 fileName: "test_image",
                 fileExtension: "png",
                 folder: "images"
@@ -54,25 +53,22 @@ class UploadEntityTests: XCTestCase {
     }
     
     func testUploadEntityValidateFailed() {
-        let entity = try! UploadEntity(
-            bytes: "dEadBeef",
+        let entity = try! FileEntity(
             fileName: "test_image",
             folder: "images"
         )
         
-        expect(toThrow: UploadEntity.Error.missingFileExtension, from: entity.verify)
+        expect(toThrow: FileEntity.Error.missingFileExtension, from: entity.verify)
         
-        let entity2 = try! UploadEntity(
-            bytes: "dEadBeef",
+        let entity2 = try! FileEntity(
             fileExtension: "png",
             folder: "images"
         )
-        expect(toThrow: UploadEntity.Error.missingFilename, from: entity2.verify)
+        expect(toThrow: FileEntity.Error.missingFilename, from: entity2.verify)
     }
     
     func testUploadEntityGetFilePath() {
-        let entity = try! UploadEntity(
-            bytes: "dEadBeef",
+        let entity = try! FileEntity(
             fileName: "test_image",
             fileExtension: "png",
             folder: "images"
@@ -82,20 +78,18 @@ class UploadEntityTests: XCTestCase {
     }
     
     func testUploadEntityGetFilePathFailed() {
-        let entity = try! UploadEntity(
-            bytes: "dEadBeef",
+        let entity = try! FileEntity(
             fileExtension: "jpg",
             folder: "images"
         )
         
-        expect(toThrow: UploadEntity.Error.missingFilename, from: entity.getFilePath)
+        expect(toThrow: FileEntity.Error.missingFilename, from: entity.getFilePath)
         
-        let entity2 = try! UploadEntity(
-            bytes: "dEadBeef",
+        let entity2 = try! FileEntity(
             fileName: "profileImage",
             folder: "images"
         )
         
-        expect(toThrow: UploadEntity.Error.missingFileExtension, from: entity2.getFilePath)
+        expect(toThrow: FileEntity.Error.missingFileExtension, from: entity2.getFilePath)
     }
 }
