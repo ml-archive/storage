@@ -11,7 +11,7 @@ class PathBuilderTests: XCTestCase {
     func testTemplate() {
         let template = try! Template.compile("test/$folder/$file")
         
-        let entity = try! FileEntity(
+        let entity = FileEntity(
             fileName: "profileImage",
             fileExtension: "png",
             folder: "app",
@@ -32,7 +32,7 @@ class PathBuilderTests: XCTestCase {
     
     func testConfigurableBuilder() {
         let template = "$folder/$fileName.$fileExtension"
-        let entity = try! FileEntity(
+        let entity = FileEntity(
             fileName: "profileImage",
             fileExtension: "png",
             folder: "app",
