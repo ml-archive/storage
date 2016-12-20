@@ -97,7 +97,6 @@ A times, you may need to upload files to a different scheme than `folder/file.ex
 The following template will upload `profile.png` from the folder `images` to `myapp/images/profile.png`
 ```json
 {
-  //...
   "template": "myapp/$folder/$file"
 }
 ```
