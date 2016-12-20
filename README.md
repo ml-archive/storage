@@ -109,3 +109,9 @@ There are a few aliases that will be replaced by the real metadata of the file a
 * `$fileExtension`: The file's extension.
 * `$folder`: The provided folder
 * `$mimeFolder`: A folder generated according to the file's mime.
+
+## 🏆 Credits
+This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).
+
+## 📄 License
+This package is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
