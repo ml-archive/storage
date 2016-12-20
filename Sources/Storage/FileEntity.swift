@@ -1,14 +1,40 @@
 import Core
 
+/// Representation of a to-be-uploaded file.
 public struct FileEntity {
+    public enum Error : Swift.Error {
+        case missingFilename
+        case missingFileExtension
+    }
+    
     //TODO(Brett): considering changing all `String` fields to `Bytes`.
+    
+    /// The raw bytes of the file.
     var bytes: Bytes?
+    
+    /// The file's name.
     var fileName: String?
+    
+    /// The file's extension.
     var fileExtension: String?
+    
+    /// The folder the file was uploaded from.
     var folder: String?
+    
+    /// The type of the file.
     var mime: String?
     
-    init(
+    /**
+        FileEntity's default initializer.
+     
+        - Parameters:
+            - bytes: The raw bytes of the file.
+            - fileName: The file's name.
+            - fileExtension: The file's extension.
+            - folder: The folder the file was uploaded from.
+            - mime: The type of the file.
+     */
+    public init(
         bytes: Bytes? = nil,
         fileName: String? = nil,
         fileExtension: String? = nil,
@@ -20,11 +46,6 @@ public struct FileEntity {
         self.fileExtension = fileExtension
         self.folder = folder
         self.mime = mime
-    }
-    
-    enum Error : Swift.Error {
-        case missingFilename
-        case missingFileExtension
     }
 }
 

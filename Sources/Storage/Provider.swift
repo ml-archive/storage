@@ -2,6 +2,7 @@ import S3
 import Vapor
 import S3SignerAWS
 
+///A provider for configuring the `Storage` package.
 public final class Provider: Vapor.Provider {
     public enum Error: Swift.Error {
         case missingConfigurationFile
