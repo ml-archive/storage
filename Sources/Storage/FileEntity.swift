@@ -9,13 +9,13 @@ public struct FileEntity {
     var mime: String?
     
     init(
-        bytes: BytesRepresentable? = nil,
+        bytes: Bytes? = nil,
         fileName: String? = nil,
         fileExtension: String? = nil,
         folder: String? = nil,
         mime: String? = nil
-    ) throws {
-        self.bytes = try bytes?.makeBytes()
+    ) {
+        self.bytes = bytes
         self.fileName = fileName
         self.fileExtension = fileExtension
         self.folder = folder

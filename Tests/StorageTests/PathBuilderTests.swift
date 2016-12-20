@@ -3,43 +3,25 @@ import XCTest
 
 class PathBuilderTests: XCTestCase {
     static var allTests = [
-        ("testTemplate", testTemplate),
-        ("testConfigurableBuilderInit", testConfigurableBuilderInit),
-        ("testConfigurableBuilder", testConfigurableBuilder)
+        ("testConfigurablePathBuilder", testConfigurablePathBuilder),
+        ("testConfigurablePathBuilderFailed", testConfigurablePathBuilderFailed)
     ]
     
-    func testTemplate() {
-        let template = try! Template.compile("test/$folder/$file")
-        
-        let entity = try! FileEntity(
-            fileName: "profileImage",
-            fileExtension: "png",
-            folder: "app",
-            mime: "image/png"
+    func testConfigurablePathBuilder() {
+        let entity = FileEntity(
+            fileName: "smile",
+            fileExtension: "jpg",
+            folder: "images",
+            mime: "image/jpg"
         )
         
-        let path = try! template.renderPath(entity: entity)
-        XCTAssertEqual(path, "test/app/profileImage.png")
-    }
-    
-    func testConfigurableBuilderInit() {
-        let template = "$folder/$mimeFolder/$fileName.$fileExtension"
-        
         expectNoThrow() {
-            let _ = try ConfigurablePathBuilder(template: template)
+            let builder = try ConfigurablePathBuilder(template: "$folder/$file")
+            let path = try builder.build(entity: entity)
+            XCTAssertEqual(path, "images/smile.jpg")
         }
     }
     
-    func testConfigurableBuilder() {
-        let template = "$folder/$fileName.$fileExtension"
-        let entity = try! FileEntity(
-            fileName: "profileImage",
-            fileExtension: "png",
-            folder: "app",
-            mime: "image/png"
-        )
-        let builder = try! ConfigurablePathBuilder(template: template)
-        let path = try! builder.build(entity: entity)
-        XCTAssertEqual(path, "app/profileImage.png")
+    func testConfigurablePathBuilderFailed() {
     }
 }

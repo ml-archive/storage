@@ -5,9 +5,9 @@ import Foundation
 public protocol NetworkDriver {
     var pathBuilder: PathBuilder { get set }
     
-    func upload(entity: FileEntity) throws
-    func get(entity: FileEntity) throws -> Data
-    func delete(entity: FileEntity) throws
+    @discardableResult func upload(entity: FileEntity) throws -> String
+    func get(path: String) throws -> Data
+    func delete(path: String) throws
 }
 
 public final class S3Driver: NetworkDriver {
@@ -24,22 +24,23 @@ public final class S3Driver: NetworkDriver {
         self.s3 = s3
     }
     
-    public func upload(entity: FileEntity) throws {
+    @discardableResult
+    public func upload(entity: FileEntity) throws -> String {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
         
         let path = try pathBuilder.build(entity: entity)
-        try s3.put(bytes: bytes, filePath: path)
+        try s3.put(bytes: bytes, filePath: path, accessControl: .publicRead)
+        
+        return path
     }
     
-    public func get(entity: FileEntity) throws -> Data {
-        let path = try pathBuilder.build(entity: entity)
+    public func get(path: String) throws -> Data {
         return try s3.get(fileAtPath: path)
     }
     
-    public func delete(entity: FileEntity) throws {
-        let path = try pathBuilder.build(entity: entity)
+    public func delete(path: String) throws {
         return try s3.delete(fileAtPath: path)
     }
 }

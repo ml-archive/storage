@@ -32,6 +32,30 @@ struct Template {
     }
 }
 
+extension Template.Error: Equatable {
+    static func ==(lhs: Template.Error, rhs: Template.Error) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidAlias, .invalidAlias):
+            return true
+        }
+    }
+}
+
+extension Template.PathPart: Equatable {
+    static func ==(lhs: Template.PathPart, rhs: Template.PathPart) -> Bool {
+        switch (lhs, rhs) {
+        case (.literal(let a), literal(let b)):
+            return a == b
+            
+        case (.alias(let a), .alias(let b)):
+            return a == b
+            
+        default:
+            return false
+        }
+    }
+}
+
 extension Template {
     static func compile(_ templateString: String) throws -> Template {
         var template = Template(scanner: Scanner(templateString.bytes))

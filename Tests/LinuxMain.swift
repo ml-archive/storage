@@ -2,6 +2,8 @@ import XCTest
 @testable import StorageTests
 
 XCTMain([
-     testCase(UploadEntityTests.allTests),
-     testCase(PathBuilderTests.allTests)
+    testCase(StorageTests.allTests), 
+    testCase(FileEntityTests.allTests),
+    testCase(TemplateTests.allTests),
+    testCase(PathBuilderTests.allTests)
 ])
