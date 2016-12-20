@@ -1,7 +1,7 @@
 import XCTest
 @testable import Storage
 
-class UploadEntityTests: XCTestCase {
+class FileEntityTests: XCTestCase {
     static var allTests = [
         ("testFileEntityInit", testFileEntityInit),
         ("testFileEntityInitNil", testFileEntityInitNil),
