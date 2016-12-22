@@ -9,7 +9,7 @@ A package to ease the use of multiple storage and CDN services.
 ##### Table of Contents
 * [Getting started](#getting-started-)
 * [Upload a file](#upload-a-file-)
-  * [Base 64 data URI](#base-64-data-uri-)
+  * [Base 64 and data URI](#base-64-and-data-uri-)
 * [Download a file](#download-a-file-)
 * [Delete a file](#delete-a-file-)
 * [Configuration](#configuration-)
@@ -27,16 +27,17 @@ Update your `Package.swift` file.
 
 ```swift
 import Storage
-try drop.addProvider(Storage.Provider.self)
+try drop.addProvider(StorageProvider.self)
 ```
 
 Now, create a JSON file named `Config/storage.json` with the following contents:
 
 ```json
 {
-  "driver": "aws",
+  "driver": "s3",
   "accessKey": "$YOUR_AWS_ACCESS_KEY",
-  "secretKey": "$YOUR_AWS_SECRET_KEY"
+  "secretKey": "$YOUR_AWS_SECRET_KEY",
+  "template": "$folder/$file"
 }
 ```
 Learn about [these fields and more](#configuration-).
@@ -60,10 +61,11 @@ let path = try Storage.upload(bytes: bytes, fileName: "profile", fileExtension: 
 print(path) //prints `images/profile.png`
 ```
 
-#### Base64 data URI 📡
-Is your file a base64 data URI? No problem!
+#### Base64 and data URI 📡
+Is your file a base64 or data URI? No problem!
 ```swift
 Storage.upload(base64: String, //...)
+Storage.upload(dataURI: String, //...)
 ```
 
 ## Download a file ✅
@@ -81,10 +83,10 @@ try Storage.delete("images/profile.png")
 ## Configuration ⚙
 `Storage` has a variety of configurable options.
 #### Network driver 🔨
-The network driver is the module responsible for interacting with your 3rd party service. The default, and currently the only, driver is `aws`.
+The network driver is the module responsible for interacting with your 3rd party service. The default, and currently the only, driver is `s3`.
 ```json
 {
-  "driver": "aws",
+  "driver": "s3",
   "accessKey": "$YOUR_AWS_ACCESS_KEY",
   "secretKey": "$YOUR_AWS_SECRET_KEY"
 }
@@ -92,13 +94,11 @@ The network driver is the module responsible for interacting with your 3rd party
 The `driver` key is optional and will default to `aws`. `accessKey` and `secretKey` are both required by the AWS driver.
 
 #### Upload path 🛣
-A times, you may need to upload files to a different scheme than `folder/file.ext`. You can achieve this using an upload template.
+A times, you may need to upload files to a different scheme than `folder/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `$folder/$file`.
 
 The following template will upload `profile.png` from the folder `images` to `myapp/images/profile.png`
 ```json
-{
-  "template": "myapp/$folder/$file"
-}
+"template": "myapp/$folder/$file"
 ```
 
 ##### Aliases

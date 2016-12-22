@@ -5,7 +5,7 @@ import Foundation
 protocol NetworkDriver {
     var pathBuilder: PathBuilder { get set }
     
-    @discardableResult func upload(entity: FileEntity) throws -> String
+    @discardableResult func upload(entity: inout FileEntity) throws -> String
     func get(path: String) throws -> Data
     func delete(path: String) throws
 }
@@ -13,6 +13,7 @@ protocol NetworkDriver {
 final class S3Driver: NetworkDriver {
     enum Error: Swift.Error {
         case nilFileUpload
+        case missingFileExtensionAndType
     }
     
     var pathBuilder: PathBuilder
@@ -25,9 +26,21 @@ final class S3Driver: NetworkDriver {
     }
     
     @discardableResult
-    func upload(entity: FileEntity) throws -> String {
+    func upload(entity: inout FileEntity) throws -> String {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
+        }
+        
+        if entity.fileExtension == nil {
+            guard entity.loadFileExtensionFromMime() else {
+                throw Error.missingFileExtensionAndType
+            }
+        }
+        
+        if entity.mime == nil {
+            guard entity.loadMimeFromFileExtension() else {
+                throw Error.missingFileExtensionAndType
+            }
         }
         
         let path = try pathBuilder.build(entity: entity)

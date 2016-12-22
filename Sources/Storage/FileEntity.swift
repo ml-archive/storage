@@ -1,4 +1,5 @@
 import Core
+import MimeLib
 
 /// Representation of a to-be-uploaded file.
 public struct FileEntity {
@@ -80,5 +81,31 @@ extension FileEntity {
         }
         
         return path.joined(separator: "/")
+    }
+}
+
+extension FileEntity {
+    @discardableResult
+    mutating func loadMimeFromFileExtension() -> Bool {
+        guard let fileExtension = fileExtension else { return false }
+        
+        guard let mime = Mime.get(fileExtension: fileExtension)?.rawValue else {
+            return false
+        }
+        
+        self.mime = mime
+        return true
+    }
+    
+    @discardableResult
+    mutating func loadFileExtensionFromMime() -> Bool {
+        guard let mime = mime else { return false }
+        
+        guard let fileExtension = Mime.fileExtension(forMime: mime) else {
+            return false
+        }
+        
+        self.fileExtension = fileExtension
+        return true
     }
 }
