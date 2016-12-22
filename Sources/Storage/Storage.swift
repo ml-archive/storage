@@ -31,9 +31,20 @@ public class Storage {
         return try networkDriver.upload(entity: &entity)
     }
     
-    //TODO(Brett): comment docs
+    /**
+        Uploads the given `Multipart` file.
+     
+        - Parameters:
+            - multipart: The file to be uploaded.
+            - folder: The folder to save the file in.
+     
+        - Returns: The path the file was uploaded to.
+     */
     @discardableResult
-    public static func upload(multipart: Multipart) throws -> String {
+    public static func upload(
+        multipart: Multipart,
+        folder: String? = nil
+    ) throws -> String {
         switch multipart {
         case .file(let file):
             guard let name = file.name else {
@@ -45,7 +56,7 @@ public class Storage {
                 fileName: name,
                 fileExtension: nil,
                 mime: file.type,
-                folder: nil
+                folder: folder
             )
         
         default:
@@ -53,11 +64,30 @@ public class Storage {
         }
     }
     
-    //TODO(Brett): comment docs
+    /**
+        Downloads the file located at `url` and then uploads it.
+     
+        - Parameters:
+            - url: The location of the file to be downloaded.
+            - fileName: The name of the file.
+            - fileExtension: The extension of the file.
+            - folder: The folder to save the file in.
+     
+        - Returns: The path the file was uploaded to.
+     */
     @discardableResult
-    public static func upload(url: String, fileName: String) throws -> String {
+    public static func upload(
+        url: String,
+        fileName: String,
+        fileExtension: String? = nil,
+        folder: String? = nil
+    ) throws -> String {
         let response = try BasicClient.get(url)
-        var entity = FileEntity(fileName: fileName)
+        var entity = FileEntity(
+            fileName: fileName,
+            fileExtension: fileExtension,
+            folder: folder
+        )
         
         entity.bytes = response.body.bytes
         entity.mime = response.contentType
@@ -73,7 +103,7 @@ public class Storage {
         - fileName: The name of the file.
         - fileExtension: The extension of the file.
         - mime: The mime type of the file.
-        - folder: The folder the file came from.
+        - folder: The folder to save the file in.
      
      - Returns: The path the file was uploaded to.
      */
@@ -104,7 +134,7 @@ public class Storage {
         - fileName: The name of the file.
         - fileExtension: The extension of the file.
         - mime: The mime type of the file.
-        - folder: The folder the file came from.
+        - folder: The folder to save the file in.
      
      - Returns: The path the file was uploaded to.
      */
@@ -125,6 +155,17 @@ public class Storage {
         )
     }
     
+    /**
+        Decodes and uploads a data URI.
+     
+        - Parameters:
+            - dataURI: The data URI to be decoded.
+            - fileName: The name of the file.
+            - fileExtension: The extension of the file.
+            - folder: The folder to save the file in.
+     
+        - Returns: The path the file was uploaded to.
+     */
     @discardableResult
     public static func upload(
         dataURI: String,

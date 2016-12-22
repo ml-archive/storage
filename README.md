@@ -35,8 +35,8 @@ Now, create a JSON file named `Config/storage.json` with the following contents:
 ```json
 {
   "driver": "s3",
-  "accessKey": "$YOUR_AWS_ACCESS_KEY",
-  "secretKey": "$YOUR_AWS_SECRET_KEY",
+  "accessKey": "$YOUR_S3_ACCESS_KEY",
+  "secretKey": "$YOUR_S3_SECRET_KEY",
   "template": "$folder/$file"
 }
 ```
@@ -87,11 +87,13 @@ The network driver is the module responsible for interacting with your 3rd party
 ```json
 {
   "driver": "s3",
-  "accessKey": "$YOUR_AWS_ACCESS_KEY",
-  "secretKey": "$YOUR_AWS_SECRET_KEY"
+  "accessKey": "$YOUR_S3_ACCESS_KEY",
+  "secretKey": "$YOUR_S3_SECRET_KEY",
+  "bucket": "$YOUR_S3_BUCKET",
+  "region": "$YOUR_S3_REGION"
 }
 ```
-The `driver` key is optional and will default to `aws`. `accessKey` and `secretKey` are both required by the AWS driver.
+The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `bucket` and `region` are both optional. `region` will default to `eu-west-1` if not provided.
 
 #### Upload path 🛣
 A times, you may need to upload files to a different scheme than `folder/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `$folder/$file`.
