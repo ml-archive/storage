@@ -96,16 +96,16 @@ public class Storage {
     }
     
     /**
-     Uploads bytes to a storage server.
+        Uploads bytes to a storage server.
      
-     - Parameters:
-        - bytes: The raw bytes of the file.
-        - fileName: The name of the file.
-        - fileExtension: The extension of the file.
-        - mime: The mime type of the file.
-        - folder: The folder to save the file in.
+        - Parameters:
+            - bytes: The raw bytes of the file.
+            - fileName: The name of the file.
+            - fileExtension: The extension of the file.
+            - mime: The mime type of the file.
+            - folder: The folder to save the file in.
      
-     - Returns: The path the file was uploaded to.
+        - Returns: The path the file was uploaded to.
      */
     @discardableResult
     public static func upload(
@@ -127,16 +127,16 @@ public class Storage {
     }
     
     /**
-     Uploads a base64 encoded URI to a storage server.
+        Uploads a base64 encoded URI to a storage server.
      
-     - Parameters:
-        - base64: The raw, base64 encoded, bytes of the file in `String` representation.
-        - fileName: The name of the file.
-        - fileExtension: The extension of the file.
-        - mime: The mime type of the file.
-        - folder: The folder to save the file in.
+        - Parameters:
+            - base64: The raw, base64 encoded, bytes of the file in `String` representation.
+            - fileName: The name of the file.
+            - fileExtension: The extension of the file.
+            - mime: The mime type of the file.
+            - folder: The folder to save the file in.
      
-     - Returns: The path the file was uploaded to.
+        - Returns: The path the file was uploaded to.
      */
     @discardableResult
     public static func upload(
