@@ -3,7 +3,7 @@ import Vapor
 import S3SignerAWS
 
 ///A provider for configuring the `Storage` package.
-public final class Provider: Vapor.Provider {
+public final class StorageProvider: Provider {
     public enum Error: Swift.Error {
         case missingConfigurationFile
         case unsupportedDriver(String)
@@ -34,9 +34,9 @@ public final class Provider: Vapor.Provider {
     private func buildNetworkDriver(config: Config) throws -> NetworkDriver {
         let template = config["template"]?.string ?? "$folder/$file"
         let networkDriver: NetworkDriver
-        let driver = config["driver"]?.string ?? "aws"
+        let driver = config["driver"]?.string ?? "s3"
         switch driver {
-        case "aws":
+        case "s3":
             networkDriver = try buildS3Driver(config: config, template: template)
         default:
             throw Error.unsupportedDriver(driver)

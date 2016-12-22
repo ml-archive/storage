@@ -1,9 +1,15 @@
 import Core
+import HTTP
+import Vapor
+import DataURI
+import Transport
 import Foundation
 
 public class Storage {
     public enum Error: Swift.Error {
         case missingNetworkDriver
+        case unsupportedMultipart(Multipart)
+        case missingFileName
     }
     
     static var networkDriver: NetworkDriver?
@@ -17,12 +23,46 @@ public class Storage {
         - Returns: The path the file was uploaded to.
      */
     @discardableResult
-    public static func upload(entity: FileEntity) throws -> String {
+    public static func upload(entity: inout FileEntity) throws -> String {
         guard let networkDriver = networkDriver else {
             throw Error.missingNetworkDriver
         }
         
-        return try networkDriver.upload(entity: entity)
+        return try networkDriver.upload(entity: &entity)
+    }
+    
+    //TODO(Brett): comment docs
+    @discardableResult
+    public static func upload(multipart: Multipart) throws -> String {
+        switch multipart {
+        case .file(let file):
+            guard let name = file.name else {
+                throw Error.missingFileName
+            }
+            
+            return try upload(
+                bytes: file.data,
+                fileName: name,
+                fileExtension: nil,
+                mime: file.type,
+                folder: nil
+            )
+        
+        default:
+            throw Error.unsupportedMultipart(multipart)
+        }
+    }
+    
+    //TODO(Brett): comment docs
+    @discardableResult
+    public static func upload(url: String, fileName: String) throws -> String {
+        let response = try BasicClient.get(url)
+        var entity = FileEntity(fileName: fileName)
+        
+        entity.bytes = response.body.bytes
+        entity.mime = response.contentType
+        
+        return try upload(entity: &entity)
     }
     
     /**
@@ -45,7 +85,7 @@ public class Storage {
         mime: String? = nil,
         folder: String? = nil
     ) throws -> String {
-        let entity = FileEntity(
+        var entity = FileEntity(
             bytes: bytes,
             fileName: fileName,
             fileExtension: fileExtension,
@@ -53,7 +93,7 @@ public class Storage {
             mime: mime
         )
         
-        return try upload(entity: entity)
+        return try upload(entity: &entity)
     }
     
     /**
@@ -81,6 +121,23 @@ public class Storage {
             fileName: fileName,
             fileExtension: fileExtension,
             mime: mime,
+            folder: folder
+        )
+    }
+    
+    @discardableResult
+    public static func upload(
+        dataURI: String,
+        fileName: String? = nil,
+        fileExtension: String? = nil,
+        folder: String? = nil
+    ) throws -> String {
+        let (type, bytes) = try dataURI.dataURIDecoded()
+        return try upload(
+            bytes: bytes,
+            fileName: fileName,
+            fileExtension: fileExtension,
+            mime: type,
             folder: folder
         )
     }
