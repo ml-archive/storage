@@ -11,14 +11,13 @@ class PathBuilderTests: XCTestCase {
         let entity = FileEntity(
             fileName: "smile",
             fileExtension: "jpg",
-            folder: "images",
             mime: "image/jpg"
         )
         
         expectNoThrow() {
-            let builder = try ConfigurablePathBuilder(template: "$folder/$file")
+            let builder = try ConfigurablePathBuilder(template: "/myapp/$mimeFolder/$file")
             let path = try builder.build(entity: entity)
-            XCTAssertEqual(path, "images/smile.jpg")
+            XCTAssertEqual(path, "/myapp/images/original/smile.jpg")
         }
     }
     

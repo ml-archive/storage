@@ -7,7 +7,8 @@ class TemplateTests: XCTestCase {
         ("testExtractPartBasic", testExtractPartBasic),
         ("testExtractPartFailed", testExtractPartFailed),
         ("testExtractPartDoubleAlias", testExtractPartDoubleAlias),
-        ("testExtractPartMatchingPrefixes", testExtractPartMatchingPrefixes)
+        ("testExtractPartMatchingPrefixes", testExtractPartMatchingPrefixes),
+        ("testPathPartEquatableFalse", testPathPartEquatableFalse)
     ]
     
     func testExtractPartBasic() {
@@ -50,6 +51,18 @@ class TemplateTests: XCTestCase {
         ]
         
         expectParts(expected, fromTemplate: template)
+    }
+    
+    func testPathPartEquatableFalse() {
+        let literalA = Template.PathPart.literal("a".bytes)
+        let literalB = Template.PathPart.literal("b".bytes)
+        
+        let aliasFile = Template.PathPart.alias(.file)
+        let aliasMime = Template.PathPart.alias(.mime)
+        
+        XCTAssertNotEqual(literalA, literalB)
+        XCTAssertNotEqual(aliasFile, aliasMime)
+        XCTAssertNotEqual(literalA, aliasMime)
     }
 }
 

@@ -111,6 +111,7 @@ There are a few aliases that will be replaced by the real metadata of the file a
 * `$fileName`: The file's name.
 * `$fileExtension`: The file's extension.
 * `$folder`: The provided folder
+* `$mime`: The file's content type.
 * `$mimeFolder`: A folder generated according to the file's mime.
 
 ## 🏆 Credits

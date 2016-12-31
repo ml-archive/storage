@@ -11,7 +11,7 @@ extension PathBuilder {
     }
 }
 
-final class ConfigurablePathBuilder: PathBuilder {
+struct ConfigurablePathBuilder: PathBuilder {
     var template: Template
     
     init(template: String) throws {
@@ -19,6 +19,6 @@ final class ConfigurablePathBuilder: PathBuilder {
     }
     
     func build(entity: FileEntity) throws -> String {
-        return try template.renderPath(entity: entity)
+        return try template.renderPath(for: entity, generateFolder)
     }
 }

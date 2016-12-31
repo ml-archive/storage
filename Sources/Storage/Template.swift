@@ -16,6 +16,7 @@ struct Template {
         case fileName       = "$fileName"
         case fileExtension  = "$fileExtension"
         case folder         = "$folder"
+        case mime           = "$mime"
         case mimeFolder     = "$mimeFolder"
     }
     
@@ -67,11 +68,15 @@ extension Template {
         return template
     }
     
-    func renderPath(entity: FileEntity) throws -> String {
+    func renderPath(
+        for entity: FileEntity,
+        _ mimeFolderBuilder: (String?
+    ) -> String?) throws -> String {
         enum Error: Swift.Error {
             case fileNameNotProvided
             case fileExtensionNotProvided
             case folderNotProvided
+            case mimeNotProvided
             case mimeFolderNotProvided
         }
         
@@ -91,7 +96,7 @@ extension Template {
                         throw Error.fileExtensionNotProvided
                     }
                     
-                    pathBytes += "\(fileName).\(fileExtension)".bytes
+                    pathBytes += [fileName, fileExtension].joined(separator: ".").bytes
                     
                 case .fileName:
                     guard let fileName = entity.fileName else {
@@ -111,11 +116,14 @@ extension Template {
                     }
                     pathBytes += folder.bytes
                     
-                
-                //TODO: looks like template needs a way to correctly generate
-                //the mime folder
+                case .mime:
+                    guard let mime = entity.mime else {
+                        throw Error.mimeNotProvided
+                    }
+                    pathBytes += mime.bytes
+                    
                 case .mimeFolder:
-                    guard let mimeFolder = entity.mime else {
+                    guard let mimeFolder = mimeFolderBuilder(entity.mime) else {
                         throw Error.mimeFolderNotProvided
                     }
                     pathBytes += mimeFolder.bytes
@@ -153,6 +161,7 @@ extension Template {
         insert(into: _trie, Alias.fileName)
         insert(into: _trie, Alias.fileExtension)
         insert(into: _trie, Alias.folder)
+        insert(into: _trie, Alias.mime)
         insert(into: _trie, Alias.mimeFolder)
         return _trie
     }()
