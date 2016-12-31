@@ -1,6 +1,7 @@
 import S3
 import Vapor
-import S3SignerAWS
+
+import enum Driver.Region
 
 ///A provider for configuring the `Storage` package.
 public final class StorageProvider: Provider {
@@ -9,6 +10,7 @@ public final class StorageProvider: Provider {
         case unsupportedDriver(String)
         case missingAccessKey
         case missingSecretKey
+        case missingBucket
         case unknownRegion(String)
     }
     
@@ -32,7 +34,7 @@ public final class StorageProvider: Provider {
     public func beforeRun(_: Droplet) {}
     
     private func buildNetworkDriver(config: Config) throws -> NetworkDriver {
-        let template = config["template"]?.string ?? "$folder/$file"
+        let template = config["template"]?.string ?? "/$file"
         let networkDriver: NetworkDriver
         let driver = config["driver"]?.string ?? "s3"
         switch driver {
@@ -54,7 +56,12 @@ public final class StorageProvider: Provider {
             throw Error.missingSecretKey
         }
         
-        let bucket = config["bucket"]?.string
+        //TODO(Brett): add $bucket alias
+        guard let bucket = config["bucket"]?.string else {
+            throw Error.missingBucket
+        }
+        
+        let host = config["host"]?.string ?? "s3.amazonaws.com"
         
         let regionString = config["region"]?.string ?? "eu-west-1"
         guard let region = Region(rawValue: regionString) else {
@@ -62,9 +69,9 @@ public final class StorageProvider: Provider {
         }
         
         let s3 = S3(
+            host: "\(bucket).\(host)",
             accessKey: accessKey,
             secretKey: secretKey,
-            bucketName: bucket,
             region: region
         )
         

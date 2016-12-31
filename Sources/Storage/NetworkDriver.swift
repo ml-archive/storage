@@ -6,7 +6,7 @@ protocol NetworkDriver {
     var pathBuilder: PathBuilder { get set }
     
     @discardableResult func upload(entity: inout FileEntity) throws -> String
-    func get(path: String) throws -> Data
+    func get(path: String) throws -> Bytes
     func delete(path: String) throws
 }
 
@@ -44,16 +44,16 @@ final class S3Driver: NetworkDriver {
         }
         
         let path = try pathBuilder.build(entity: entity)
-        try s3.put(bytes: bytes, filePath: path, accessControl: .publicRead)
+        try s3.upload(bytes: bytes, path: path, access: .publicRead)
         
         return path
     }
     
-    func get(path: String) throws -> Data {
-        return try s3.get(fileAtPath: path)
+    func get(path: String) throws -> Bytes {
+        return try s3.get(path: path)
     }
     
     func delete(path: String) throws {
-        return try s3.delete(fileAtPath: path)
+        return try s3.delete(file: path)
     }
 }

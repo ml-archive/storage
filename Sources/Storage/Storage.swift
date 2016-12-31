@@ -189,9 +189,9 @@ public class Storage {
         - Parameters:
             - path: The path of the file to be downloaded.
      
-        - Returns: The downloaded file as `NSData`.
+        - Returns: The downloaded file as `Bytes`/`[UInt8]`.
      */
-    public static func get(path: String) throws -> Data {
+    public static func get(path: String) throws -> Bytes {
         guard let networkDriver = networkDriver else {
             throw Error.missingNetworkDriver
         }
