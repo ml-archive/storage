@@ -99,7 +99,7 @@ The `driver` key is optional and will default to `s3`. `accessKey` and `secretKe
 #### Upload path 🛣
 A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/$file`.
 
-The following template will upload `profile.png` from the folder `images` to `myapp/images/profile.png`
+The following template will upload `profile.png` from the folder `images` to `/myapp/images/profile.png`
 ```json
 "template": "/myapp/$folder/$file"
 ```
