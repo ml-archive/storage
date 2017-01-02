@@ -110,9 +110,14 @@ There are a few aliases that will be replaced by the real metadata of the file a
 * `$file`: The file's name and extension.
 * `$fileName`: The file's name.
 * `$fileExtension`: The file's extension.
-* `$folder`: The provided folder
+* `$folder`: The provided folder.
 * `$mime`: The file's content type.
 * `$mimeFolder`: A folder generated according to the file's mime.
+* `$day`: The current day.
+* `$month`: The current month.
+* `$year`: The current year.
+* `$timestamp`: The time of upload.
+* `$uuid`: A generated UUID.
 
 ## 🏆 Credits
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).

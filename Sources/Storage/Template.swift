@@ -1,14 +1,23 @@
 import Core
+import Random
+import Foundation
 
 extension Byte {
-    static var dollarSign: Byte {
-        return "$".bytes[0]
-    }
+    /// $
+    static var dollarSign: Byte = 0x24
 }
 
 struct Template {
+    let calendar = Calendar(identifier: .gregorian)
+    
     enum Error: Swift.Error {
         case invalidAlias(String)
+        case failedToExtractDate
+        case fileNameNotProvided
+        case fileExtensionNotProvided
+        case folderNotProvided
+        case mimeNotProvided
+        case mimeFolderNotProvided
     }
     
     enum Alias: String {
@@ -18,6 +27,11 @@ struct Template {
         case folder         = "$folder"
         case mime           = "$mime"
         case mimeFolder     = "$mimeFolder"
+        case day            = "$day"
+        case month          = "$month"
+        case year           = "$year"
+        case timestamp      = "$timestamp"
+        case uuid           = "$uuid"
     }
     
     enum PathPart {
@@ -30,30 +44,6 @@ struct Template {
     
     init(scanner: Scanner<Byte>) {
         self.scanner = scanner
-    }
-}
-
-extension Template.Error: Equatable {
-    static func ==(lhs: Template.Error, rhs: Template.Error) -> Bool {
-        switch (lhs, rhs) {
-        case (.invalidAlias, .invalidAlias):
-            return true
-        }
-    }
-}
-
-extension Template.PathPart: Equatable {
-    static func ==(lhs: Template.PathPart, rhs: Template.PathPart) -> Bool {
-        switch (lhs, rhs) {
-        case (.literal(let a), literal(let b)):
-            return a == b
-            
-        case (.alias(let a), .alias(let b)):
-            return a == b
-            
-        default:
-            return false
-        }
     }
 }
 
@@ -70,15 +60,9 @@ extension Template {
     
     func renderPath(
         for entity: FileEntity,
-        _ mimeFolderBuilder: (String?
-    ) -> String?) throws -> String {
-        enum Error: Swift.Error {
-            case fileNameNotProvided
-            case fileExtensionNotProvided
-            case folderNotProvided
-            case mimeNotProvided
-            case mimeFolderNotProvided
-        }
+        _ mimeFolderBuilder: (String?) -> String?
+    ) throws -> String {
+        let dateComponents = getDateComponents()
         
         var pathBytes: [Byte] = []
         
@@ -127,6 +111,39 @@ extension Template {
                         throw Error.mimeFolderNotProvided
                     }
                     pathBytes += mimeFolder.bytes
+                    
+                case .day:
+                    guard let day = dateComponents.day else {
+                        throw Error.failedToExtractDate
+                    }
+                    pathBytes += "\(day)".bytes
+                    
+                case .month:
+                    guard let month = dateComponents.month else {
+                        throw Error.failedToExtractDate
+                    }
+                    pathBytes += "\(month)".bytes
+                    
+                case .year:
+                    guard let year = dateComponents.year else {
+                        throw Error.failedToExtractDate
+                    }
+                    pathBytes += "\(year)".bytes
+                    
+                case .timestamp:
+                    guard
+                        let hours = dateComponents.hour,
+                        let minutes = dateComponents.minute,
+                        let seconds = dateComponents.second
+                    else {
+                        throw Error.failedToExtractDate
+                    }
+                    let time = formatTime(hours: hours, minutes: minutes, seconds: seconds)
+                    pathBytes += time.bytes
+                    
+                case .uuid:
+                    let uuidBytes = UUID().uuidString.bytes
+                    pathBytes += uuidBytes
                 }
             }
         }
@@ -163,6 +180,11 @@ extension Template {
         insert(into: _trie, Alias.folder)
         insert(into: _trie, Alias.mime)
         insert(into: _trie, Alias.mimeFolder)
+        insert(into: _trie, Alias.day)
+        insert(into: _trie, Alias.month)
+        insert(into: _trie, Alias.year)
+        insert(into: _trie, Alias.timestamp)
+        insert(into: _trie, Alias.uuid)
         return _trie
     }()
     
@@ -214,5 +236,60 @@ extension Template {
         }
         
         return .literal(partial)
+    }
+}
+
+extension Template {
+    func getDateComponents() -> DateComponents {
+        return calendar.dateComponents(
+            [.day, .month, .year, .second, .minute, .hour],
+            from: Date()
+        )
+    }
+    
+    func padDigitLeft(_ digit: Int) -> String {
+        return digit < 10 ? "0\(digit)" : "\(digit)"
+    }
+    
+    func padDigitRight(_ digit: Int) -> String {
+        return digit < 10 ? "\(digit)0" : "\(digit)"
+    }
+    
+    func formatTime(hours: Int, minutes: Int, seconds: Int) -> String {
+        let hours = padDigitLeft(hours)
+        let minutes = padDigitRight(minutes)
+        let seconds = padDigitRight(seconds)
+        
+        return "\(hours):\(minutes):\(seconds)"
+    }
+}
+
+extension Template.Error: Equatable {
+    static func ==(lhs: Template.Error, rhs: Template.Error) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidAlias, .invalidAlias):
+            return true
+            
+        case (.failedToExtractDate, .failedToExtractDate):
+            return true
+            
+        default:
+            return false
+        }
+    }
+}
+
+extension Template.PathPart: Equatable {
+    static func ==(lhs: Template.PathPart, rhs: Template.PathPart) -> Bool {
+        switch (lhs, rhs) {
+        case (.literal(let a), literal(let b)):
+            return a == b
+            
+        case (.alias(let a), .alias(let b)):
+            return a == b
+            
+        default:
+            return false
+        }
     }
 }
