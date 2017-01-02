@@ -173,7 +173,7 @@ public class Storage {
         fileExtension: String? = nil,
         folder: String? = nil
     ) throws -> String {
-        let (type, bytes) = try dataURI.dataURIDecoded()
+        let (bytes, type) = try dataURI.dataURIDecoded()
         return try upload(
             bytes: bytes,
             fileName: fileName,
