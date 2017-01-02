@@ -15,7 +15,7 @@ class PathBuilderTests: XCTestCase {
         )
         
         expectNoThrow() {
-            let builder = try ConfigurablePathBuilder(template: "/myapp/$mimeFolder/$timestamp-$file")
+            let builder = try ConfigurablePathBuilder(template: "/myapp/$mimeFolder/$file")
             let path = try builder.build(entity: entity)
             XCTAssertEqual(path, "/myapp/images/original/smile.jpg")
         }
