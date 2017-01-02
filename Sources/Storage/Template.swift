@@ -13,6 +13,7 @@ struct Template {
     enum Error: Swift.Error {
         case invalidAlias(String)
         case failedToExtractDate
+        case malformedFileName
         case fileNameNotProvided
         case fileExtensionNotProvided
         case folderNotProvided
@@ -73,14 +74,10 @@ extension Template {
             case .alias(let alias):
                 switch alias {
                 case .file:
-                    guard let fileName = entity.fileName else {
-                        throw Error.fileNameNotProvided
+                    guard let fullFileName = entity.fullFileName else {
+                        throw Error.malformedFileName
                     }
-                    guard let fileExtension = entity.fileExtension else {
-                        throw Error.fileExtensionNotProvided
-                    }
-                    
-                    pathBytes += [fileName, fileExtension].joined(separator: ".").bytes
+                    pathBytes += fullFileName.bytes
                     
                 case .fileName:
                     guard let fileName = entity.fileName else {
@@ -251,14 +248,10 @@ extension Template {
         return digit < 10 ? "0\(digit)" : "\(digit)"
     }
     
-    func padDigitRight(_ digit: Int) -> String {
-        return digit < 10 ? "\(digit)0" : "\(digit)"
-    }
-    
     func formatTime(hours: Int, minutes: Int, seconds: Int) -> String {
         let hours = padDigitLeft(hours)
-        let minutes = padDigitRight(minutes)
-        let seconds = padDigitRight(seconds)
+        let minutes = padDigitLeft(minutes)
+        let seconds = padDigitLeft(seconds)
         
         return "\(hours):\(minutes):\(seconds)"
     }
@@ -267,10 +260,14 @@ extension Template {
 extension Template.Error: Equatable {
     static func ==(lhs: Template.Error, rhs: Template.Error) -> Bool {
         switch (lhs, rhs) {
-        case (.invalidAlias, .invalidAlias):
-            return true
-            
-        case (.failedToExtractDate, .failedToExtractDate):
+        case (.invalidAlias, .invalidAlias),
+             (.malformedFileName, .malformedFileName),
+             (.failedToExtractDate, .failedToExtractDate),
+             (.fileNameNotProvided, .fileNameNotProvided),
+             (.fileExtensionNotProvided, .fileExtensionNotProvided),
+             (.folderNotProvided, .folderNotProvided),
+             (.mimeNotProvided, .mimeNotProvided),
+             (.mimeFolderNotProvided, .mimeFolderNotProvided):
             return true
             
         default:

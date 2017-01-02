@@ -6,6 +6,7 @@ public struct FileEntity {
     public enum Error : Swift.Error {
         case missingFilename
         case missingFileExtension
+        case malformedFileName
     }
     
     //TODO(Brett): considering changing all `String` fields to `Bytes`.
@@ -13,7 +14,17 @@ public struct FileEntity {
     /// The raw bytes of the file.
     var bytes: Bytes?
     
-    /// The file's name.
+    
+    // The file's name with the extension.
+    var fullFileName: String? {
+        guard let fileName = fileName, let fileExtension = fileExtension else {
+            return nil
+        }
+        
+        return [fileName, fileExtension].joined(separator: ".")
+    }
+    
+    /// The file's name without the extension.
     var fileName: String?
     
     /// The file's extension.
@@ -47,6 +58,8 @@ public struct FileEntity {
         self.fileExtension = fileExtension
         self.folder = folder
         self.mime = mime
+        
+        sanitize()
     }
 }
 
@@ -64,16 +77,12 @@ extension FileEntity {
 
 extension FileEntity {
     func getFilePath() throws -> String {
-        guard let fileName = fileName else {
-            throw Error.missingFilename
-        }
-        
-        guard let fileExtension = fileExtension else {
-            throw Error.missingFileExtension
+        guard let fileName = fullFileName else {
+            throw Error.malformedFileName
         }
         
         var path = [
-            "\(fileName).\(fileExtension)"
+            fileName
         ]
         
         if let folder = folder {
@@ -85,6 +94,20 @@ extension FileEntity {
 }
 
 extension FileEntity {
+    mutating func sanitize() {
+        guard let fileName = fileName, fileName.contains(".") else { return }
+        
+        let components = fileName.components(separatedBy: ".")
+        
+        // don't override if a programmer provided an extension
+        if fileExtension == nil {
+            fileExtension = components.last
+        }
+        
+        self.fileName = components.dropLast().joined(separator: ".")
+    }
+    
+    
     @discardableResult
     mutating func loadMimeFromFileExtension() -> Bool {
         guard let fileExtension = fileExtension else { return false }
