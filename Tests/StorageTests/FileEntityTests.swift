@@ -8,7 +8,8 @@ class FileEntityTests: XCTestCase {
         ("testFileEntityValidate", testFileEntityValidate),
         ("testFileEntityValidateFailed", testFileEntityValidateFailed),
         ("testFileEntityGetFilePath", testFileEntityGetFilePath),
-        ("testFileEntityGetFilePathFailed", testFileEntityGetFilePathFailed)
+        ("testFileEntityGetFilePathFailed", testFileEntityGetFilePathFailed),
+        ("testFileEntityWithExtensionInName", testFileEntityWithExtensionInName)
     ]
     
     func testFileEntityInit() {
@@ -77,13 +78,23 @@ class FileEntityTests: XCTestCase {
             folder: "images"
         )
         
-        expect(toThrow: FileEntity.Error.missingFilename, from: entity.getFilePath)
+        expect(toThrow: FileEntity.Error.malformedFileName, from: entity.getFilePath)
         
         let entity2 = FileEntity(
             fileName: "profileImage",
             folder: "images"
         )
         
-        expect(toThrow: FileEntity.Error.missingFileExtension, from: entity2.getFilePath)
+        expect(toThrow: FileEntity.Error.malformedFileName, from: entity2.getFilePath)
+    }
+    
+    func testFileEntityWithExtensionInName() {
+        let entity = FileEntity(
+            fileName: "test.png"
+        )
+        
+        XCTAssertEqual(entity.fileName, "test")
+        XCTAssertEqual(entity.fileExtension, "png")
+        XCTAssertEqual(entity.fullFileName, "test.png")
     }
 }

@@ -2,3 +2,5 @@ coverage:
     range: "0...100"
     ignore:
         - "Sources/Storage/Utilities"
+        - "Sources/Storage/NetworkDriver.swift"
+        - "Tests/"

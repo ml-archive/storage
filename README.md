@@ -35,9 +35,10 @@ Now, create a JSON file named `Config/storage.json` with the following contents:
 ```json
 {
   "driver": "s3",
+  "bucket": "mybucket",
   "accessKey": "$YOUR_S3_ACCESS_KEY",
   "secretKey": "$YOUR_S3_SECRET_KEY",
-  "template": "$folder/$file"
+  "cdnUrl": "$CDN_BASE_URL"
 }
 ```
 Learn about [these fields and more](#configuration-).
@@ -57,8 +58,8 @@ The aforementioned function will attempt to upload the file using your [selected
 
 If you want to upload an image named `profile.png` your call site would look like:
 ```swift
-let path = try Storage.upload(bytes: bytes, fileName: "profile", fileExtension: "png")
-print(path) //prints `images/profile.png`
+let path = try Storage.upload(bytes: bytes, fileName: "profile.png")
+print(path) //prints `/profile.png`
 ```
 
 #### Base64 and data URI 📡
@@ -72,13 +73,13 @@ Storage.upload(dataURI: String, //...)
 To download a file that was previously uploaded you simply use the generated path.
 ```swift
 //download image as `Foundation.Data`
-let data = try Storage.get("images/profile.png")
+let data = try Storage.get("/images/profile.png")
 ```
 
 ## Delete a file ❌
 Deleting a file using this package isn't the recommended way to handle removal, but is still possible.
 ```swift
-try Storage.delete("images/profile.png")
+try Storage.delete("/images/profile.png")
 ```
 ## Configuration ⚙
 `Storage` has a variety of configurable options.
@@ -89,18 +90,19 @@ The network driver is the module responsible for interacting with your 3rd party
   "driver": "s3",
   "accessKey": "$YOUR_S3_ACCESS_KEY",
   "secretKey": "$YOUR_S3_SECRET_KEY",
+  "host": "s3.amazonaws.com"
   "bucket": "$YOUR_S3_BUCKET",
   "region": "$YOUR_S3_REGION"
 }
 ```
-The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `bucket` and `region` are both optional. `region` will default to `eu-west-1` if not provided.
+The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `host`, `bucket` and `region` are all optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com` if not provided.
 
 #### Upload path 🛣
-A times, you may need to upload files to a different scheme than `folder/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `$folder/$file`.
+A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/$file`.
 
-The following template will upload `profile.png` from the folder `images` to `myapp/images/profile.png`
+The following template will upload `profile.png` from the folder `images` to `/myapp/images/profile.png`
 ```json
-"template": "myapp/$folder/$file"
+"template": "/myapp/$folder/$file"
 ```
 
 ##### Aliases
@@ -109,8 +111,14 @@ There are a few aliases that will be replaced by the real metadata of the file a
 * `$file`: The file's name and extension.
 * `$fileName`: The file's name.
 * `$fileExtension`: The file's extension.
-* `$folder`: The provided folder
+* `$folder`: The provided folder.
+* `$mime`: The file's content type.
 * `$mimeFolder`: A folder generated according to the file's mime.
+* `$day`: The current day.
+* `$month`: The current month.
+* `$year`: The current year.
+* `$timestamp`: The time of upload.
+* `$uuid`: A generated UUID.
 
 ## 🏆 Credits
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).

@@ -7,7 +7,9 @@ class TemplateTests: XCTestCase {
         ("testExtractPartBasic", testExtractPartBasic),
         ("testExtractPartFailed", testExtractPartFailed),
         ("testExtractPartDoubleAlias", testExtractPartDoubleAlias),
-        ("testExtractPartMatchingPrefixes", testExtractPartMatchingPrefixes)
+        ("testExtractPartMatchingPrefixes", testExtractPartMatchingPrefixes),
+        ("testPathPartEquatableFalse", testPathPartEquatableFalse),
+        ("testPadDigits", testPadDigits)
     ]
     
     func testExtractPartBasic() {
@@ -50,6 +52,35 @@ class TemplateTests: XCTestCase {
         ]
         
         expectParts(expected, fromTemplate: template)
+    }
+    
+    func testPathPartEquatableFalse() {
+        let literalA = Template.PathPart.literal("a".bytes)
+        let literalB = Template.PathPart.literal("b".bytes)
+        
+        let aliasFile = Template.PathPart.alias(.file)
+        let aliasMime = Template.PathPart.alias(.mime)
+        
+        XCTAssertNotEqual(literalA, literalB)
+        XCTAssertNotEqual(aliasFile, aliasMime)
+        XCTAssertNotEqual(literalA, aliasMime)
+    }
+    
+    func testPadDigits() {
+        let template = Template(scanner: Scanner([]))
+        
+        let zeroFour = template.padDigitLeft(4)
+        XCTAssertEqual(zeroFour, "04")
+        
+        let twenty = template.padDigitLeft(20)
+        XCTAssertEqual(twenty, "20")
+    }
+    
+    func testTimeFormat() {
+        let template = Template(scanner: Scanner([]))
+        
+        let time = template.formatTime(hours: 4, minutes: 30, seconds: 5)
+        XCTAssertEqual(time, "04:30:05")
     }
 }
 

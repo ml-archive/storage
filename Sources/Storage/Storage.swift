@@ -8,12 +8,13 @@ import Foundation
 public class Storage {
     public enum Error: Swift.Error {
         case missingNetworkDriver
+        case cdnBaseURLNotSet
         case unsupportedMultipart(Multipart)
         case missingFileName
     }
     
     static var networkDriver: NetworkDriver?
-    
+    static var cdnBaseURL: String?
     /**
         Uploads the given `FileEntity`.
      
@@ -189,14 +190,22 @@ public class Storage {
         - Parameters:
             - path: The path of the file to be downloaded.
      
-        - Returns: The downloaded file as `NSData`.
+        - Returns: The downloaded file as `Bytes`/`[UInt8]`.
      */
-    public static func get(path: String) throws -> Data {
+    public static func get(path: String) throws -> Bytes {
         guard let networkDriver = networkDriver else {
             throw Error.missingNetworkDriver
         }
         
         return try networkDriver.get(path: path)
+    }
+    
+    public static func getCDNPath(for path: String) throws -> String {
+        guard let cdnBaseURL = cdnBaseURL else {
+            throw Error.cdnBaseURLNotSet
+        }
+        
+        return cdnBaseURL + path
     }
     
     /**
