@@ -37,7 +37,8 @@ Now, create a JSON file named `Config/storage.json` with the following contents:
   "driver": "s3",
   "bucket": "mybucket",
   "accessKey": "$YOUR_S3_ACCESS_KEY",
-  "secretKey": "$YOUR_S3_SECRET_KEY"
+  "secretKey": "$YOUR_S3_SECRET_KEY",
+  "cdnUrl": "$CDN_BASE_URL"
 }
 ```
 Learn about [these fields and more](#configuration-).
@@ -57,7 +58,7 @@ The aforementioned function will attempt to upload the file using your [selected
 
 If you want to upload an image named `profile.png` your call site would look like:
 ```swift
-let path = try Storage.upload(bytes: bytes, fileName: "profile", fileExtension: "png")
+let path = try Storage.upload(bytes: bytes, fileName: "profile.png")
 print(path) //prints `/profile.png`
 ```
 

@@ -25,6 +25,7 @@ public final class StorageProvider: Provider {
         
         let networkDriver = try buildNetworkDriver(config: config)
         Storage.networkDriver = networkDriver
+        Storage.cdnBaseURL = config["cdnUrl"]?.string
     }
     
     public func boot(_ drop: Droplet) {}

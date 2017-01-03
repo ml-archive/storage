@@ -8,12 +8,13 @@ import Foundation
 public class Storage {
     public enum Error: Swift.Error {
         case missingNetworkDriver
+        case cdnBaseURLNotSet
         case unsupportedMultipart(Multipart)
         case missingFileName
     }
     
     static var networkDriver: NetworkDriver?
-    
+    static var cdnBaseURL: String?
     /**
         Uploads the given `FileEntity`.
      
@@ -197,6 +198,14 @@ public class Storage {
         }
         
         return try networkDriver.get(path: path)
+    }
+    
+    public static func getCDNPath(for path: String) throws -> String {
+        guard let cdnBaseURL = cdnBaseURL else {
+            throw Error.cdnBaseURLNotSet
+        }
+        
+        return cdnBaseURL + path
     }
     
     /**
