@@ -90,6 +90,15 @@ Here is how you generate the CDN path to a given asset.
 let cdnPath = Storage.getCDNPath(for: path)
 ```
 
+If your CDN path is more involved than `cdnUrl` + `path`, you can build out Storage's optional completionhandler to override the default functionality.
+
+```swift
+Storage.cdnPathBuilder { baseURL, path in
+    let joinedPath = (baseURL + path)
+    return joinedPath.replacingOccurrences(of: "/images/original/", with: "/image/")
+}
+```
+
 ## Delete a file ❌
 Deleting a file using this package isn't the recommended way to handle removal, but is still possible.
 ```swift
@@ -122,9 +131,9 @@ The following template will upload `profile.png` from the folder `images` to `/m
 ##### Aliases
 Aliases are special keys in your template that will be replaced with dynamic information at the time of upload.
 
- ***Note**: if you use an alias and the information wasn't provided at the file upload's callsite, Storage will throw a `missingX`/`malformedX` error.*
+ *Note: if you use an alias and the information wasn't provided at the file upload's callsite, Storage will throw a `missingX`/`malformedX` error.*
 
-`$file`: The file's name and extension.
+`#file`: The file's name and extension.
 <details><summary>Example</summary>
 
 ```
@@ -135,7 +144,7 @@ Returns: test.png
 
 ---
 
-`$fileName`: The file's name.
+`#fileName`: The file's name.
 <details><summary>Example</summary>
 
 ```
@@ -146,7 +155,7 @@ Returns: test
 
 ---
 
-`$fileExtension`: The file's extension.
+`#fileExtension`: The file's extension.
 <details><summary>Example</summary>
 
 ```
@@ -157,7 +166,7 @@ Returns: png
 
 ---
 
-`$folder`: The provided folder.
+`#folder`: The provided folder.
 <details><summary>Example</summary>
 
 ```
@@ -168,7 +177,7 @@ Returns: uploads
 
 ---
 
-`$mime`: The file's content type.
+`#mime`: The file's content type.
 <details><summary>Example</summary>
 
 ```
@@ -179,7 +188,7 @@ Returns: image/png
 
 ---
 
-`$mimeFolder`: A folder generated according to the file's mime.
+`#mimeFolder`: A folder generated according to the file's mime.
 
 This alias will check the file's mime and if it's an image, it will return `images/original` else it will return `data`
 <details><summary>Example</summary>
@@ -192,7 +201,7 @@ Returns: images/original
 
 ---
 
-`$day`: The current day.
+`#day`: The current day.
 <details><summary>Example</summary>
 
 ```
@@ -204,7 +213,7 @@ Returns: 12
 
 ---
 
-`$month`: The current month.
+`#month`: The current month.
 <details><summary>Example</summary>
 
 ```
@@ -216,7 +225,7 @@ Returns: 12
 
 ---
 
-`$year`: The current year.
+`#year`: The current year.
 <details><summary>Example</summary>
 
 ```
@@ -228,7 +237,7 @@ Returns: 2012
 
 ---
 
-`$timestamp`: The time of upload.
+`#timestamp`: The time of upload.
 <details><summary>Example</summary>
 
 ```
@@ -240,7 +249,7 @@ Returns: 17:05:00
 
 ---
 
-`$uuid`: A generated UUID.
+`#uuid`: A generated UUID.
 <details><summary>Example</summary>
 
  ```
