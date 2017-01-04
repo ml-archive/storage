@@ -3,8 +3,8 @@ import Random
 import Foundation
 
 extension Byte {
-    /// $
-    static var dollarSign: Byte = 0x24
+    /// #
+    static var octothorp: Byte = 0x23
 }
 
 struct Template {
@@ -22,17 +22,17 @@ struct Template {
     }
     
     enum Alias: String {
-        case file           = "$file"
-        case fileName       = "$fileName"
-        case fileExtension  = "$fileExtension"
-        case folder         = "$folder"
-        case mime           = "$mime"
-        case mimeFolder     = "$mimeFolder"
-        case day            = "$day"
-        case month          = "$month"
-        case year           = "$year"
-        case timestamp      = "$timestamp"
-        case uuid           = "$uuid"
+        case file           = "#file"
+        case fileName       = "#fileName"
+        case fileExtension  = "#fileExtension"
+        case folder         = "#folder"
+        case mime           = "#mime"
+        case mimeFolder     = "#mimeFolder"
+        case day            = "#day"
+        case month          = "#month"
+        case year           = "#year"
+        case timestamp      = "#timestamp"
+        case uuid           = "#uuid"
     }
     
     enum PathPart {
@@ -153,7 +153,7 @@ extension Template {
     mutating func extractPart() throws -> PathPart? {
         guard let byte = scanner.peek() else { return nil }
         
-        if byte == Byte.dollarSign {
+        if byte == Byte.octothorp {
             return try extractAlias()
         } else {
             return extractLiteral()
@@ -226,7 +226,7 @@ extension Template {
         
         while
             let byte = scanner.peek(aheadBy: peeked),
-            byte != Byte.dollarSign
+            byte != Byte.octothorp
         {
             peeked += 1
             partial += byte

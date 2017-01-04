@@ -14,6 +14,7 @@ final class S3Driver: NetworkDriver {
     enum Error: Swift.Error {
         case nilFileUpload
         case missingFileExtensionAndType
+        case pathMissingForwardSlash
     }
     
     var pathBuilder: PathBuilder
@@ -44,6 +45,13 @@ final class S3Driver: NetworkDriver {
         }
         
         let path = try pathBuilder.build(entity: entity)
+        
+        guard path.hasPrefix("/") else {
+            print("The S3 driver requires your path to begin with `/`")
+            print("Please check `template` in `storage.json`.")
+            throw Error.pathMissingForwardSlash
+        }
+        
         try s3.upload(bytes: bytes, path: path, access: .publicRead)
         
         return path

@@ -11,6 +11,7 @@ A package to ease the use of multiple storage and CDN services.
 * [Upload a file](#upload-a-file-)
   * [Base 64 and data URI](#base-64-and-data-uri-)
 * [Download a file](#download-a-file-)
+* [Get CDN path](#get-cdn-path)
 * [Delete a file](#delete-a-file-)
 * [Configuration](#configuration-)
   * [Network driver](#network-driver-)
@@ -38,6 +39,7 @@ Now, create a JSON file named `Config/storage.json` with the following contents:
   "bucket": "mybucket",
   "accessKey": "$YOUR_S3_ACCESS_KEY",
   "secretKey": "$YOUR_S3_SECRET_KEY",
+  "host": "s3.amazonaws.com",
   "cdnUrl": "$CDN_BASE_URL"
 }
 ```
@@ -65,8 +67,14 @@ print(path) //prints `/profile.png`
 #### Base64 and data URI 📡
 Is your file a base64 or data URI? No problem!
 ```swift
-Storage.upload(base64: String, //...)
-Storage.upload(dataURI: String, //...)
+Storage.upload(base64: "SGVsbG8sIFdvcmxkIQ==", fileName: "base64.txt")
+Storage.upload(dataURI: "data:,Hello%2C%20World!", fileName: "data-uri.txt")
+```
+
+#### Remote resources 
+Download an asset from a URL and then reupload it to your storage server.
+```swift
+Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png")
 ```
 
 ## Download a file ✅
@@ -74,6 +82,12 @@ To download a file that was previously uploaded you simply use the generated pat
 ```swift
 //download image as `Foundation.Data`
 let data = try Storage.get("/images/profile.png")
+```
+
+## Get CDN path
+Here is how you generate the CDN path to a given asset.
+```swift
+let cdnPath = Storage.getCDNPath(for: path)
 ```
 
 ## Delete a file ❌
@@ -90,7 +104,7 @@ The network driver is the module responsible for interacting with your 3rd party
   "driver": "s3",
   "accessKey": "$YOUR_S3_ACCESS_KEY",
   "secretKey": "$YOUR_S3_SECRET_KEY",
-  "host": "s3.amazonaws.com"
+  "host": "s3.amazonaws.com",
   "bucket": "$YOUR_S3_BUCKET",
   "region": "$YOUR_S3_REGION"
 }
@@ -98,27 +112,144 @@ The network driver is the module responsible for interacting with your 3rd party
 The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `host`, `bucket` and `region` are all optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com` if not provided.
 
 #### Upload path 🛣
-A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/$file`.
+A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/#file`.
 
 The following template will upload `profile.png` from the folder `images` to `/myapp/images/profile.png`
 ```json
-"template": "/myapp/$folder/$file"
+"template": "/myapp/#folder/#file"
 ```
 
 ##### Aliases
-There are a few aliases that will be replaced by the real metadata of the file at the time of upload. They are:
+Aliases are special keys in your template that will be replaced with dynamic information at the time of upload.
 
-* `$file`: The file's name and extension.
-* `$fileName`: The file's name.
-* `$fileExtension`: The file's extension.
-* `$folder`: The provided folder.
-* `$mime`: The file's content type.
-* `$mimeFolder`: A folder generated according to the file's mime.
-* `$day`: The current day.
-* `$month`: The current month.
-* `$year`: The current year.
-* `$timestamp`: The time of upload.
-* `$uuid`: A generated UUID.
+ ***Note**: if you use an alias and the information wasn't provided at the file upload's callsite, Storage will throw a `missingX`/`malformedX` error.*
+
+`$file`: The file's name and extension.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Returns: test.png
+```
+</details>
+
+---
+
+`$fileName`: The file's name.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Returns: test
+```
+</details>
+
+---
+
+`$fileExtension`: The file's extension.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Returns: png
+```
+</details>
+
+---
+
+`$folder`: The provided folder.
+<details><summary>Example</summary>
+
+```
+File: "uploads/test.png"
+Returns: uploads
+```
+</details>
+
+---
+
+`$mime`: The file's content type.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Returns: image/png
+```
+</details>
+
+---
+
+`$mimeFolder`: A folder generated according to the file's mime.
+
+This alias will check the file's mime and if it's an image, it will return `images/original` else it will return `data`
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Returns: images/original
+```
+</details>
+
+---
+
+`$day`: The current day.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Date: 12/12/2012
+Returns: 12
+```
+</details>
+
+---
+
+`$month`: The current month.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Date: 12/12/2012
+Returns: 12
+```
+</details>
+
+---
+
+`$year`: The current year.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Date: 12/12/2012
+Returns: 2012
+```
+</details>
+
+---
+
+`$timestamp`: The time of upload.
+<details><summary>Example</summary>
+
+```
+File: "test.png"
+Time: 17:05:00
+Returns: 17:05:00
+```
+</details>
+
+---
+
+`$uuid`: A generated UUID.
+<details><summary>Example</summary>
+
+ ```
+File: "test.png"
+Returns: 123e4567-e89b-12d3-a456-426655440000
+```
+</details>
+
+---
 
 ## 🏆 Credits
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).

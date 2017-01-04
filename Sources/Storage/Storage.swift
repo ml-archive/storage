@@ -15,6 +15,9 @@ public class Storage {
     
     static var networkDriver: NetworkDriver?
     static var cdnBaseURL: String?
+    
+    public static var cdnPathBuilder: ((String, String) -> String)?
+    
     /**
         Uploads the given `FileEntity`.
      
@@ -200,9 +203,14 @@ public class Storage {
         return try networkDriver.get(path: path)
     }
     
+    /// Appends the asset's path with the base CDN URL.
     public static func getCDNPath(for path: String) throws -> String {
         guard let cdnBaseURL = cdnBaseURL else {
             throw Error.cdnBaseURLNotSet
+        }
+        
+        if let cdnPathBuilder = cdnPathBuilder {
+            return cdnPathBuilder(cdnBaseURL, path)
         }
         
         return cdnBaseURL + path

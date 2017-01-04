@@ -57,7 +57,6 @@ public final class StorageProvider: Provider {
             throw Error.missingSecretKey
         }
         
-        //TODO(Brett): add $bucket alias
         guard let bucket = config["bucket"]?.string else {
             throw Error.missingBucket
         }
