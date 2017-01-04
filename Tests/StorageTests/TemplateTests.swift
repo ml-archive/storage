@@ -13,7 +13,7 @@ class TemplateTests: XCTestCase {
     ]
     
     func testExtractPartBasic() {
-        let template = "$folder/$file"
+        let template = "#folder/#file"
         let expected: [Template.PathPart] = [
             .alias(.folder),
             .literal("/".bytes),
@@ -24,17 +24,17 @@ class TemplateTests: XCTestCase {
     }
     
     func testExtractPartFailed() {
-        let templateString = "$madeupAlias"
+        let templateString = "#madeupAlias"
         let scanner = Scanner(templateString.bytes)
         var template = Template(scanner: scanner)
         
-        expect(toThrow: Template.Error.invalidAlias("$madeupAlias")) {
+        expect(toThrow: Template.Error.invalidAlias("#madeupAlias")) {
             _ = try template.extractPart()
         }
     }
     
     func testExtractPartDoubleAlias() {
-        let template = "$folder$file"
+        let template = "#folder#file"
         let expected: [Template.PathPart] = [
             .alias(.folder),
             .alias(.file)
@@ -44,7 +44,7 @@ class TemplateTests: XCTestCase {
     }
     
     func testExtractPartMatchingPrefixes() {
-        let template = "$file$fileName$fileExtension"
+        let template = "#file#fileName#fileExtension"
         let expected: [Template.PathPart] = [
             .alias(.file),
             .alias(.fileName),
