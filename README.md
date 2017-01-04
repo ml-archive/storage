@@ -134,129 +134,107 @@ Aliases are special keys in your template that will be replaced with dynamic inf
  *Note: if you use an alias and the information wasn't provided at the file upload's callsite, Storage will throw a `missingX`/`malformedX` error.*
 
 `#file`: The file's name and extension.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Returns: test.png
 ```
-</details>
 
 ---
 
 `#fileName`: The file's name.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Returns: test
 ```
-</details>
 
 ---
 
 `#fileExtension`: The file's extension.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Returns: png
 ```
-</details>
 
 ---
 
 `#folder`: The provided folder.
-<details><summary>Example</summary>
 
 ```
 File: "uploads/test.png"
 Returns: uploads
 ```
-</details>
 
 ---
 
 `#mime`: The file's content type.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Returns: image/png
 ```
-</details>
 
 ---
 
 `#mimeFolder`: A folder generated according to the file's mime.
 
 This alias will check the file's mime and if it's an image, it will return `images/original` else it will return `data`
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Returns: images/original
 ```
-</details>
 
 ---
 
 `#day`: The current day.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Date: 12/12/2012
 Returns: 12
 ```
-</details>
 
 ---
 
 `#month`: The current month.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Date: 12/12/2012
 Returns: 12
 ```
-</details>
 
 ---
 
 `#year`: The current year.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Date: 12/12/2012
 Returns: 2012
 ```
-</details>
 
 ---
 
 `#timestamp`: The time of upload.
-<details><summary>Example</summary>
 
 ```
 File: "test.png"
 Time: 17:05:00
 Returns: 17:05:00
 ```
-</details>
 
 ---
 
 `#uuid`: A generated UUID.
-<details><summary>Example</summary>
 
  ```
 File: "test.png"
 Returns: 123e4567-e89b-12d3-a456-426655440000
 ```
-</details>
 
 ---
 
