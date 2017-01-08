@@ -1,7 +1,7 @@
 import S3
 import Vapor
 
-import enum Driver.Region
+import enum AWSSignatureV4.Region
 
 ///A provider for configuring the `Storage` package.
 public final class StorageProvider: Provider {
