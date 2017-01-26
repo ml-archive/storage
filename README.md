@@ -93,7 +93,7 @@ let cdnPath = Storage.getCDNPath(for: path)
 If your CDN path is more involved than `cdnUrl` + `path`, you can build out Storage's optional completionhandler to override the default functionality.
 
 ```swift
-Storage.cdnPathBuilder { baseURL, path in
+Storage.cdnPathBuilder = { baseURL, path in
     let joinedPath = (baseURL + path)
     return joinedPath.replacingOccurrences(of: "/images/original/", with: "/image/")
 }
