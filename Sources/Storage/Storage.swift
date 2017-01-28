@@ -203,7 +203,20 @@ public class Storage {
         return try networkDriver.get(path: path)
     }
     
-    /// Appends the asset's path with the base CDN URL.
+       /// Appends the asset's path with the base CDN URL.
+    public static func getCDNPath(for path: String) throws -> String {
+        guard let cdnBaseURL = cdnBaseURL else {
+            throw Error.cdnBaseURLNotSet
+        }
+        
+        if let cdnPathBuilder = cdnPathBuilder {
+            return cdnPathBuilder(cdnBaseURL, path)
+        }
+        
+        return cdnBaseURL + path
+    }
+    
+    /// Appends the asset's path with the base CDN URL. With support for optional
     public static func getCDNPath(for path: String?) throws -> String? {
         guard let cdnBaseURL = cdnBaseURL else {
             throw Error.cdnBaseURLNotSet
