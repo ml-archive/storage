@@ -217,13 +217,13 @@ public class Storage {
     }
     
     /// Appends the asset's path with the base CDN URL. With support for optional
-    public static func getCDNPath(for path: String?) throws -> String? {
-        guard let cdnBaseURL = cdnBaseURL else {
-            throw Error.cdnBaseURLNotSet
-        }
-        
+    public static func getCDNPath(optional path: String?) throws -> String? {
         guard let pathUnwrapped = path else {
             return nil
+        }
+        
+        guard let cdnBaseURL = cdnBaseURL else {
+            throw Error.cdnBaseURLNotSet
         }
         
         if let cdnPathBuilder = cdnPathBuilder {
