@@ -4,6 +4,7 @@ import Vapor
 import DataURI
 import Transport
 import Foundation
+import FormData
 
 public class Storage {
     public enum Error: Swift.Error {
@@ -66,6 +67,24 @@ public class Storage {
         default:
             throw Error.unsupportedMultipart(multipart)
         }
+    }
+    
+    @discardableResult
+    public static func upload(
+        formData: Field,
+        fileName overrideFileName: String? = nil,
+        fileExtension: String? = nil,
+        folder: String? = nil
+    ) throws -> String {
+        let fileName = formData.filename
+        let bytes = formData.part.body
+        
+        return try upload(
+            bytes: bytes,
+            fileName: overrideFileName ?? fileName,
+            fileExtension: fileExtension,
+            folder: folder
+        )
     }
     
     /**
@@ -203,7 +222,7 @@ public class Storage {
         return try networkDriver.get(path: path)
     }
     
-       /// Appends the asset's path with the base CDN URL.
+    /// Appends the asset's path with the base CDN URL.
     public static func getCDNPath(for path: String) throws -> String {
         guard let cdnBaseURL = cdnBaseURL else {
             throw Error.cdnBaseURLNotSet
