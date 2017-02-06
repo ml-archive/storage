@@ -32,6 +32,8 @@ final class S3Driver: NetworkDriver {
             throw Error.nilFileUpload
         }
         
+        entity.sanitize()
+        
         if entity.fileExtension == nil {
             guard entity.loadFileExtensionFromMime() else {
                 throw Error.missingFileExtensionAndType
