@@ -112,6 +112,12 @@ extension FileEntity {
     mutating func loadMimeFromFileExtension() -> Bool {
         guard let fileExtension = fileExtension else { return false }
         
+        // MimeLib doesn't support `jpg` so do a check here first
+        guard fileExtension != "jpg" else {
+            self.mime = "image/jpeg"
+            return true
+        }
+        
         guard let mime = Mime.get(fileExtension: fileExtension)?.rawValue else {
             return false
         }
