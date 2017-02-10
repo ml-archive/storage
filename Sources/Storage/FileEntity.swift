@@ -110,7 +110,7 @@ extension FileEntity {
     
     @discardableResult
     mutating func loadMimeFromFileExtension() -> Bool {
-        guard let fileExtension = fileExtension else { return false }
+        guard let fileExtension = fileExtension?.lowercased() else { return false }
         
         // MimeLib doesn't support `jpg` so do a check here first
         guard fileExtension != "jpg" else {
