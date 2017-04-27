@@ -5,6 +5,9 @@ import enum AWSSignatureV4.Region
 
 ///A provider for configuring the `Storage` package.
 public final class StorageProvider: Provider {
+
+    public static var repositoryName: String  = "Storage"
+
     public enum Error: Swift.Error {
         case missingConfigurationFile
         case unsupportedDriver(String)
@@ -12,10 +15,6 @@ public final class StorageProvider: Provider {
         case missingSecretKey
         case missingBucket
         case unknownRegion(String)
-    }
-    
-    public var provided: Providable {
-        return Providable()
     }
     
     public init(config: Config) throws {
@@ -29,6 +28,8 @@ public final class StorageProvider: Provider {
     }
     
     public func boot(_ drop: Droplet) {}
+
+    public func boot(_ config: Config) throws {}
     
     public func afterInit(_ drop: Droplet) {}
     
