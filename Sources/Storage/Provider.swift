@@ -35,7 +35,7 @@ public final class StorageProvider: Provider {
     public func beforeRun(_: Droplet) {}
     
     private func buildNetworkDriver(config: Config) throws -> NetworkDriver {
-        let template = config["template"]?.string ?? "/$file"
+        let template = config["template"]?.string ?? "/#file"
         let networkDriver: NetworkDriver
         let driver = config["driver"]?.string ?? "s3"
         switch driver {
