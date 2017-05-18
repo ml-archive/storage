@@ -136,7 +136,7 @@ public class Storage {
         folder: String? = nil
     ) throws -> String {
         return try upload(
-            bytes: base64.base64Decoded,
+            bytes: base64.makeBytes().base64Decoded,
             fileName: fileName,
             fileExtension: fileExtension,
             mime: mime,
