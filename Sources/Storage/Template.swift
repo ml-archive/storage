@@ -145,7 +145,7 @@ extension Template {
             }
         }
         
-        return try String(bytes: pathBytes)
+        return String(bytes: pathBytes)
     }
 }
 
@@ -215,7 +215,7 @@ extension Template {
             current = next
         }
 
-        let invalidAlias = try String(bytes: partial)
+        let invalidAlias = String(bytes: partial)
         throw Error.invalidAlias(invalidAlias)
     }
     

@@ -10,7 +10,6 @@ public class Storage {
     public enum Error: Swift.Error {
         case missingNetworkDriver
         case cdnBaseURLNotSet
-        case unsupportedMultipart(Multipart)
         case missingFileName
     }
     
@@ -34,39 +33,6 @@ public class Storage {
         }
         
         return try networkDriver.upload(entity: &entity)
-    }
-    
-    /**
-        Uploads the given `Multipart` file.
-     
-        - Parameters:
-            - multipart: The file to be uploaded.
-            - folder: The folder to save the file in.
-     
-        - Returns: The path the file was uploaded to.
-     */
-    @discardableResult
-    public static func upload(
-        multipart: Multipart,
-        folder: String? = nil
-    ) throws -> String {
-        switch multipart {
-        case .file(let file):
-            guard let name = file.name else {
-                throw Error.missingFileName
-            }
-            
-            return try upload(
-                bytes: file.data,
-                fileName: name,
-                fileExtension: nil,
-                mime: file.type,
-                folder: folder
-            )
-        
-        default:
-            throw Error.unsupportedMultipart(multipart)
-        }
     }
     
     @discardableResult
@@ -105,7 +71,7 @@ public class Storage {
         fileExtension: String? = nil,
         folder: String? = nil
     ) throws -> String {
-        let response = try BasicClient.get(url)
+        let response = try EngineClient.factory.get(url)
         var entity = FileEntity(
             fileName: fileName,
             fileExtension: fileExtension,
