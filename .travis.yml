@@ -1,10 +1,20 @@
 os:
-  - linux
   - osx
-language: generic
+
+language: swift
 sudo: required
-dist: trusty
-osx_image: xcode8
+osx_image: xcode8.3
+
+before_install:
+  brew tap vapor/tap;
+  brew update;
+  brew install vapor;
+
 script:
-  - eval "$(curl -sL https://swift.vapor.sh/ci)"
-  - eval "$(curl -sL https://swift.vapor.sh/codecov)"
+  - swift build
+  - swift build -c release
+  - swift package generate-xcodeproj --enable-code-coverage
+  - xcodebuild -scheme Storage -enableCodeCoverage YES test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
