@@ -53,8 +53,8 @@ final class S3Driver: NetworkDriver {
             print("Please check `template` in `storage.json`.")
             throw Error.pathMissingForwardSlash
         }
-        
-        try s3.upload(bytes: bytes, path: path, access: .publicRead)
+
+        try s3.upload(bytes: bytes, path: path, access: .publicRead, mimeType: entity.mime)
         
         return path
     }
