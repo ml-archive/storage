@@ -45,9 +45,9 @@ Now, create a JSON file named `Config/storage.json` with the following contents:
 ```json
 {
   "driver": "s3",
-  "bucket": "mybucket",
-  "accessKey": "$YOUR_S3_ACCESS_KEY",
-  "secretKey": "$YOUR_S3_SECRET_KEY",
+  "bucket": "$AWS_S3_BUCKET",
+  "accessKey": "$AWS_ACCESS_KEY",
+  "secretKey": "$AWS_SECRET_KEY",
   "host": "s3.amazonaws.com",
   "cdnUrl": "$CDN_BASE_URL"
 }
