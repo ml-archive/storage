@@ -132,14 +132,15 @@ The network driver is the module responsible for interacting with your 3rd party
 ```json
 {
   "driver": "s3",
-  "accessKey": "$YOUR_S3_ACCESS_KEY",
-  "secretKey": "$YOUR_S3_SECRET_KEY",
+  "bucket": "$AWS_S3_BUCKET",
+  "accessKey": "$AWS_ACCESS_KEY",
+  "secretKey": "$AWS_SECRET_KEY",
   "host": "s3.amazonaws.com",
-  "bucket": "$YOUR_S3_BUCKET",
-  "region": "$YOUR_S3_REGION"
+  "cdnUrl": "$CDN_BASE_URL",
+  "region": "eu-west-1"
 }
 ```
-The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `host`, `bucket` and `region` are all optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com` if not provided.
+The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `host`, `bucket` and `region` are all optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com` if not provided. The above example uses the environment variables as provided by [Vapor Cloud](https://vapor.cloud/), but you can change this to use hardcoded values although this is not recommended. Another option is to use "fallback values" which can be achieved by using the `:` notion. For example `$AWS_S3_BUCKET:my-bucket` will fallback to `my-bucket` when the `AWS_S3_BUCKET` environment variable is not present.
 
 #### Upload path 🛣
 A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/#file`.
