@@ -136,7 +136,7 @@ The network driver is the module responsible for interacting with your 3rd party
   "accessKey": "$AWS_ACCESS_KEY",
   "secretKey": "$AWS_SECRET_KEY",
   "host": "s3.amazonaws.com",
-  "cdnUrl": "$CDN_BASE_URL"
+  "cdnUrl": "$CDN_BASE_URL",
   "region": "eu-west-1"
 }
 ```
