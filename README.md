@@ -1,9 +1,8 @@
 # Storage 🗄
-[![Swift Version](https://img.shields.io/badge/Swift-3.1-brightgreen.svg)](http://swift.org)
+[![Swift Version](https://img.shields.io/badge/Swift-3-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
-[![Linux Build Status](https://img.shields.io/circleci/project/github/nodes-vapor/storage.svg?label=Linux)](https://circleci.com/gh/nodes-vapor/storage)
-[![macOS Build Status](https://img.shields.io/travis/nodes-vapor/storage.svg?label=macOS)](https://travis-ci.org/nodes-vapor/storage)
-[![codebeat badge](https://codebeat.co/badges/52c2f960-625c-4a63-ae63-52a24d747da1)](https://codebeat.co/projects/github-com-nodes-vapor-storage)
+[![Circle CI](https://circleci.com/gh/nodes-vapor/storage/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/storage)
+[![codebeat badge](https://codebeat.co/badges/58eeca2c-7b58-4aea-9b09-d80e3b79de19)](https://codebeat.co/projects/github-com-nodes-vapor-storage-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/storage/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/storage)
 [![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/nodes-vapor/storage)](http://clayallsopp.github.io/readme-score?url=https://github.com/nodes-vapor/storage)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nodes-vapor/storage/master/LICENSE)
