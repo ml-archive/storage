@@ -26,7 +26,7 @@ A package to ease the use of multiple storage and CDN services.
 
 Update your `Package.swift` file.
 ```swift
-.Package(url: "https://github.com/nodes-vapor/storage", majorVersion: 0)
+.Package(url: "https://github.com/nodes-vapor/storage.git", majorVersion: 0)
 ```
 
 
