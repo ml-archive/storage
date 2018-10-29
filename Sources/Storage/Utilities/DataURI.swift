@@ -1,3 +1,5 @@
+import Foundation
+
 /// A parser for decoding Data URIs.
 public struct DataURIParser {
     enum Error: Swift.Error {
@@ -19,15 +21,14 @@ extension DataURIParser {
      - Parameters:
      - uri: The URI to be parsed.
 
-     - Returns: (data: UInt8, type: UInt8, typeMetadata: UInt8?)
+     - Returns: (data: [UInt8], type: [UInt8], typeMetadata: [UInt8]?)
      */
-    public static func parse(uri: String) throws -> ([UInt8], [UInt8], [UInt8]?) {
+    public static func parse(uri: String) throws -> (Data, [UInt8], [UInt8]?) {
         guard uri.hasPrefix("data:") else {
             throw Error.invalidScheme
         }
 
-        // FIXME: uri
-        var scanner: Scanner<UInt8> = Scanner( []/*uri*/)
+        var scanner: Scanner<UInt8> = Scanner(uri.bytes)
         //pop scheme ("data:")
         scanner.pop(5)
 
@@ -41,7 +42,7 @@ extension DataURIParser {
         }
 
         if let typeMetadata = typeMetadata, typeMetadata == "base64".bytes {
-            data = data.base64Decoded
+            data = Data(base64Encoded: data) ?? Data()
         }
 
         return (data, type, typeMetadata)
@@ -72,10 +73,10 @@ extension DataURIParser {
         return consume(until: [.comma])
     }
 
-    mutating func extractData() throws -> [UInt8] {
+    mutating func extractData() throws -> Data {
         assert(scanner.peek() == .comma)
         scanner.pop()
-        return try consumePercentDecoded()
+        return try Data(consumePercentDecoded())
     }
 }
 
@@ -168,7 +169,7 @@ extension String {
 
      - Returns: The type of the file and its data as bytes.
      */
-    public func dataURIDecoded() throws -> (data: [UInt8], type: String) {
+    public func dataURIDecoded() throws -> (data: Data, type: String) {
         let (data, type, _) = try DataURIParser.parse(uri: self)
         return (data, String(bytes: type, encoding: .utf8) ?? "")
     }

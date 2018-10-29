@@ -29,38 +29,6 @@ public class Storage {
     }
     
     /**
-        Downloads the file located at `url` and then uploads it.
-     
-        - Parameters:
-            - url: The location of the file to be downloaded.
-            - fileName: The name of the file.
-            - fileExtension: The extension of the file.
-            - folder: The folder to save the file in.
-     
-        - Returns: The path the file was uploaded to.
-     */
-    @discardableResult
-    public static func upload(
-        url: String,
-        fileName: String,
-        fileExtension: String? = nil,
-        folder: String? = nil,
-        on container: Container
-    ) throws -> Future<String> {
-        let response = try EngineClient.factory.get(url)
-        var entity = FileEntity(
-            fileName: fileName,
-            fileExtension: fileExtension,
-            folder: folder
-        )
-        
-        entity.bytes = response.body.bytes
-        entity.mime = response.contentType
-        
-        return try upload(entity: &entity, on: container)
-    }
-    
-    /**
         Uploads bytes to a storage server.
      
         - Parameters:
@@ -74,12 +42,13 @@ public class Storage {
      */
     @discardableResult
     public static func upload(
-        bytes: [UInt8],
+        bytes: Data,
         fileName: String? = nil,
         fileExtension: String? = nil,
         mime: String? = nil,
-        folder: String? = nil
-    ) throws -> String {
+        folder: String? = nil,
+        on container: Container
+    ) throws -> Future<String> {
         var entity = FileEntity(
             bytes: bytes,
             fileName: fileName,
@@ -88,36 +57,7 @@ public class Storage {
             mime: mime
         )
         
-        return try upload(entity: &entity)
-    }
-    
-    /**
-        Uploads a base64 encoded URI to a storage server.
-     
-        - Parameters:
-            - base64: The raw, base64 encoded, bytes of the file in `String` representation.
-            - fileName: The name of the file.
-            - fileExtension: The extension of the file.
-            - mime: The mime type of the file.
-            - folder: The folder to save the file in.
-     
-        - Returns: The path the file was uploaded to.
-     */
-    @discardableResult
-    public static func upload(
-        base64: String,
-        fileName: String? = nil,
-        fileExtension: String? = nil,
-        mime: String? = nil,
-        folder: String? = nil
-    ) throws -> String {
-        return try upload(
-            bytes: base64.bytes.base64Decoded,
-            fileName: fileName,
-            fileExtension: fileExtension,
-            mime: mime,
-            folder: folder
-        )
+        return try upload(entity: &entity, on: container)
     }
     
     /**
@@ -136,15 +76,17 @@ public class Storage {
         dataURI: String,
         fileName: String? = nil,
         fileExtension: String? = nil,
-        folder: String? = nil
-    ) throws -> String {
+        folder: String? = nil,
+        on container: Container
+    ) throws -> Future<String> {
         let (bytes, type) = try dataURI.dataURIDecoded()
         return try upload(
             bytes: bytes,
             fileName: fileName,
             fileExtension: fileExtension,
             mime: type,
-            folder: folder
+            folder: folder,
+            on: container
         )
     }
     

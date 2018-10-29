@@ -9,7 +9,7 @@ public struct FileEntity {
     }
     
     /// The raw bytes of the file.
-    var bytes: [UInt8]?
+    var bytes: Data?
     
     
     // The file's name with the extension.
@@ -44,7 +44,7 @@ public struct FileEntity {
             - mime: The type of the file.
      */
     public init(
-        bytes: [UInt8]? = nil,
+        bytes: Data? = nil,
         fileName: String? = nil,
         fileExtension: String? = nil,
         folder: String? = nil,
