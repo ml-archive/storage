@@ -1,5 +1,4 @@
 import Core
-import MimeLib
 
 /// Representation of a to-be-uploaded file.
 public struct FileEntity {
@@ -9,10 +8,8 @@ public struct FileEntity {
         case malformedFileName
     }
     
-    //TODO(Brett): considering changing all `String` fields to `Bytes`.
-    
     /// The raw bytes of the file.
-    var bytes: Bytes?
+    var bytes: [UInt8]?
     
     
     // The file's name with the extension.
@@ -47,7 +44,7 @@ public struct FileEntity {
             - mime: The type of the file.
      */
     public init(
-        bytes: Bytes? = nil,
+        bytes: [UInt8]? = nil,
         fileName: String? = nil,
         fileExtension: String? = nil,
         folder: String? = nil,
@@ -118,7 +115,7 @@ extension FileEntity {
             return true
         }
         
-        guard let mime = Mime.get(fileExtension: fileExtension)?.rawValue else {
+        guard let mime = getMime(for: fileExtension) else {
             return false
         }
         
@@ -130,7 +127,7 @@ extension FileEntity {
     mutating func loadFileExtensionFromMime() -> Bool {
         guard let mime = mime else { return false }
         
-        guard let fileExtension = Mime.fileExtension(forMime: mime) else {
+        guard let fileExtension = getExtension(for: mime) else {
             return false
         }
         

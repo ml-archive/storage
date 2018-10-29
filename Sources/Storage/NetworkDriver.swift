@@ -1,33 +1,45 @@
-import S3
 import Core
+import Vapor
 import Foundation
 
-protocol NetworkDriver {
+public protocol NetworkDriver: Service {
     var pathBuilder: PathBuilder { get set }
     
-    @discardableResult func upload(entity: inout FileEntity) throws -> String
-    func get(path: String) throws -> Bytes
-    func delete(path: String) throws
+    @discardableResult
+    func upload(entity: inout FileEntity, on container: Container) throws -> Future<String>
+    func get(path: String, on container: Container) throws -> Future<[UInt8]>
+    func delete(path: String, on container: Container) throws -> Future<Void>
 }
 
-final class S3Driver: NetworkDriver {
+public final class S3Driver: NetworkDriver {
     enum Error: Swift.Error {
         case nilFileUpload
         case missingFileExtensionAndType
         case pathMissingForwardSlash
     }
     
-    var pathBuilder: PathBuilder
-    
+    public var pathBuilder: PathBuilder
     var s3: S3
     
-    init(s3: S3, pathBuilder: PathBuilder) {
-        self.pathBuilder = pathBuilder
-        self.s3 = s3
+    public init(
+        bucket: String,
+        host: String = "s3.amazonaws.com",
+        accessKey: String,
+        secretKey: String,
+        region: Region = .euWest1,
+        pathTemplate: String = ""
+    ) throws {
+        self.pathBuilder = try ConfigurablePathBuilder(template: pathTemplate)
+        self.s3 = S3(
+            host: "\(bucket).\(host)",
+            accessKey: accessKey,
+            secretKey: secretKey,
+            region: region
+        )
     }
     
     @discardableResult
-    func upload(entity: inout FileEntity) throws -> String {
+    public func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
@@ -53,17 +65,22 @@ final class S3Driver: NetworkDriver {
             print("Please check `template` in `storage.json`.")
             throw Error.pathMissingForwardSlash
         }
-        
-        try s3.upload(bytes: bytes, path: path, access: .publicRead)
-        
-        return path
+
+        return try s3.upload(
+            bytes: Data(bytes),
+            path: path,
+            access: .publicRead,
+            on: container
+        ).map { _ in
+            return path
+        }
     }
     
-    func get(path: String) throws -> Bytes {
-        return try s3.get(path: path)
+    public func get(path: String, on container: Container) throws -> Future<[UInt8]> {
+        return container.future([])
     }
     
-    func delete(path: String) throws {
-        return try s3.delete(file: path)
+    public func delete(path: String, on container: Container) throws -> Future<Void> {
+        return container.future()
     }
 }

@@ -1,10 +1,7 @@
 import Core
 import HTTP
 import Vapor
-import DataURI
-import Transport
 import Foundation
-import FormData
 
 public class Storage {
     public enum Error: Swift.Error {
@@ -12,8 +9,7 @@ public class Storage {
         case cdnBaseURLNotSet
         case missingFileName
     }
-    
-    static var networkDriver: NetworkDriver?
+
     static var cdnBaseURL: String?
     
     public static var cdnPathBuilder: ((String, String) -> String)?
@@ -27,30 +23,9 @@ public class Storage {
         - Returns: The path the file was uploaded to.
      */
     @discardableResult
-    public static func upload(entity: inout FileEntity) throws -> String {
-        guard let networkDriver = networkDriver else {
-            throw Error.missingNetworkDriver
-        }
-        
-        return try networkDriver.upload(entity: &entity)
-    }
-    
-    @discardableResult
-    public static func upload(
-        formData: Field,
-        fileName overrideFileName: String? = nil,
-        fileExtension: String? = nil,
-        folder: String? = nil
-    ) throws -> String {
-        let fileName = formData.filename
-        let bytes = formData.part.body
-        
-        return try upload(
-            bytes: bytes,
-            fileName: overrideFileName ?? fileName,
-            fileExtension: fileExtension,
-            folder: folder
-        )
+    public static func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
+        let networkDriver = try container.make(NetworkDriver.self)
+        return try networkDriver.upload(entity: &entity, on: container)
     }
     
     /**
@@ -69,8 +44,9 @@ public class Storage {
         url: String,
         fileName: String,
         fileExtension: String? = nil,
-        folder: String? = nil
-    ) throws -> String {
+        folder: String? = nil,
+        on container: Container
+    ) throws -> Future<String> {
         let response = try EngineClient.factory.get(url)
         var entity = FileEntity(
             fileName: fileName,
@@ -81,7 +57,7 @@ public class Storage {
         entity.bytes = response.body.bytes
         entity.mime = response.contentType
         
-        return try upload(entity: &entity)
+        return try upload(entity: &entity, on: container)
     }
     
     /**
@@ -98,7 +74,7 @@ public class Storage {
      */
     @discardableResult
     public static func upload(
-        bytes: Bytes,
+        bytes: [UInt8],
         fileName: String? = nil,
         fileExtension: String? = nil,
         mime: String? = nil,
@@ -136,7 +112,7 @@ public class Storage {
         folder: String? = nil
     ) throws -> String {
         return try upload(
-            bytes: base64.makeBytes().base64Decoded,
+            bytes: base64.bytes.base64Decoded,
             fileName: fileName,
             fileExtension: fileExtension,
             mime: mime,
@@ -178,14 +154,11 @@ public class Storage {
         - Parameters:
             - path: The path of the file to be downloaded.
      
-        - Returns: The downloaded file as `Bytes`/`[UInt8]`.
+        - Returns: The downloaded file.
      */
-    public static func get(path: String) throws -> Bytes {
-        guard let networkDriver = networkDriver else {
-            throw Error.missingNetworkDriver
-        }
-        
-        return try networkDriver.get(path: path)
+    public static func get(path: String, on container: Container) throws -> Future<[UInt8]> {
+        let networkDriver = try container.make(NetworkDriver.self)
+        return try networkDriver.get(path: path, on: container)
     }
     
     /// Appends the asset's path with the base CDN URL.
@@ -224,11 +197,8 @@ public class Storage {
         - Parameters:
             - path: The path of the file to be deleted.
      */
-    public static func delete(path: String) throws {
-        guard let networkDriver = networkDriver else {
-            throw Error.missingNetworkDriver
-        }
-        
-        try networkDriver.delete(path: path)
+    public static func delete(path: String, on container: Container) throws -> Future<Void> {
+        let networkDriver = try container.make(NetworkDriver.self)
+        return try networkDriver.delete(path: path, on: container)
     }
 }
