@@ -4,7 +4,7 @@ func expect<E: Error, ReturnType>(
     toThrow expectedError: E,
     file: StaticString = #file,
     line: UInt = #line,
-    from closure: (Void) throws -> ReturnType
+    from closure: () throws -> ReturnType
 ) where E: Equatable {
     do {
         let _ = try closure()
@@ -23,7 +23,7 @@ func expect<E: Error, ReturnType>(
 func expectNoThrow<ReturnType>(
     file: StaticString = #file,
     line: UInt = #line,
-    _ closure: (Void) throws -> ReturnType
+    _ closure: () throws -> ReturnType
 ) {
     do {
         let _ = try closure()
@@ -33,7 +33,7 @@ func expectNoThrow<ReturnType>(
 }
 
 func expect<ReturnType>(
-    _ closure: (Void) throws -> ReturnType,
+    _ closure: () throws -> ReturnType,
     file: StaticString = #file,
     line: UInt = #line,
     toReturn expectedResult: ReturnType
