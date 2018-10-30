@@ -2,24 +2,25 @@ version: 2
 jobs:
   MacOS:
     macos:
-      xcode: "9.0"
+      xcode: "9.3.0"
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v1-spm-deps-{{ checksum "Package.swift" }}
+            - v3-spm-deps-{{ checksum "Package.swift" }}
       - run:
           name: Install CMySQL and CTLS
           command: |
             brew tap vapor/homebrew-tap
             brew install cmysql
             brew install ctls
+            brew install libressl
       - run:
           name: Build and Run Tests
           no_output_timeout: 1800
           command: |
             swift package generate-xcodeproj --enable-code-coverage    
-            xcodebuild -scheme Storage-Package -enableCodeCoverage YES test | xcpretty
+            xcodebuild -scheme AdminPanel-Package -enableCodeCoverage YES test | xcpretty
       - run:
           name: Report coverage to Codecov
           command: |
@@ -30,12 +31,12 @@ jobs:
             - .build
   Linux:
     docker:
-      - image: brettrtoomey/vapor-ci:0.0.1
+      - image: nodesvapor/vapor-ci:swift-4.1
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v2-spm-deps-{{ checksum "Package.swift" }}
+            - v4-spm-deps-{{ checksum "Package.swift" }}
       - run:
           name: Copy Package file
           command: cp Package.swift res
