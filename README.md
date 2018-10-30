@@ -1,6 +1,6 @@
 # Storage 🗄
-[![Swift Version](https://img.shields.io/badge/Swift-3-brightgreen.svg)](http://swift.org)
-[![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
+[![Swift Version](https://img.shields.io/badge/Swift-4-brightgreen.svg)](http://swift.org)
+[![Vapor Version](https://img.shields.io/badge/Vapor-3-F6CBCA.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/storage/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/storage)
 [![codebeat badge](https://codebeat.co/badges/58eeca2c-7b58-4aea-9b09-d80e3b79de19)](https://codebeat.co/projects/github-com-nodes-vapor-storage-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/storage/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/storage)
@@ -11,15 +11,15 @@ A package to ease the use of multiple storage and CDN services.
 
 
 ##### Table of Contents
-* [Getting started](#getting-started)
-* [Upload a file](#upload-a-file)
-  * [Base 64 and data URI](#base-64-and-data-uri)
-* [Download a file](#download-a-file)
-* [Get CDN path](#get-cdn-path)
-* [Delete a file](#delete-a-file)
-* [Configuration](#configuration)
-  * [Network driver](#network-driver)
-  * [Upload path](#upload-path)
+* [Getting started](#getting-started-)
+* [Upload a file](#upload-a-file-)
+  * [Base 64 and data URI](#base-64-and-data-uri-)
+* [Download a file](#download-a-file-)
+* [Get CDN path](#get-cdn-path-)
+* [Delete a file](#delete-a-file-)
+* [Configuration](#configuration-)
+  * [Network driver](#network-driver-)
+  * [Upload path](#upload-path-)
 
 
 ## 📦 Installation
