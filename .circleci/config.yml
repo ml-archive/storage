@@ -20,7 +20,7 @@ jobs:
           no_output_timeout: 1800
           command: |
             swift package generate-xcodeproj --enable-code-coverage    
-            xcodebuild -scheme AdminPanel-Package -enableCodeCoverage YES test | xcpretty
+            xcodebuild -scheme Storage-Package -enableCodeCoverage YES test | xcpretty
       - run:
           name: Report coverage to Codecov
           command: |
