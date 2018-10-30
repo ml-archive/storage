@@ -5,5 +5,5 @@ XCTMain([
     testCase(FileEntityTests.allTests),
     testCase(TemplateTests.allTests),
     testCase(PathBuilderTests.allTests),
-    testCase(AWSSignerTestSuite)
+    testCase(AWSSignerTestSuite.allTests)
 ])
