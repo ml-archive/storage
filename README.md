@@ -1,6 +1,6 @@
 # Storage 🗄
-[![Swift Version](https://img.shields.io/badge/Swift-3-brightgreen.svg)](http://swift.org)
-[![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
+[![Swift Version](https://img.shields.io/badge/Swift-4.2-brightgreen.svg)](http://swift.org)
+[![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/storage/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/storage)
 [![codebeat badge](https://codebeat.co/badges/58eeca2c-7b58-4aea-9b09-d80e3b79de19)](https://codebeat.co/projects/github-com-nodes-vapor-storage-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/storage/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/storage)
@@ -15,7 +15,7 @@ A package to ease the use of multiple storage and CDN services.
 * [Upload a file](#upload-a-file-)
   * [Base 64 and data URI](#base-64-and-data-uri-)
 * [Download a file](#download-a-file-)
-* [Get CDN path](#get-cdn-path)
+* [Get CDN path](#get-cdn-path-)
 * [Delete a file](#delete-a-file-)
 * [Configuration](#configuration-)
   * [Network driver](#network-driver-)
@@ -31,28 +31,7 @@ Update your `Package.swift` file.
 
 
 ## Getting started 🚀
-
-`Storage` offers a [Provider](https://vapor.github.io/documentation/guide/provider.html) and does all configuration through JSON files.
-
-```swift
-import Storage
-try drop.addProvider(StorageProvider.self)
-```
-
-Now, create a JSON file named `Config/storage.json` with the following contents:
-
-```json
-{
-  "driver": "s3",
-  "bucket": "$AWS_S3_BUCKET",
-  "accessKey": "$AWS_ACCESS_KEY",
-  "secretKey": "$AWS_SECRET_KEY",
-  "host": "s3.amazonaws.com",
-  "cdnUrl": "$CDN_BASE_URL"
-}
-```
-Learn about [these fields and more](#configuration-).
-
+Storage makes it easy to start uploading and downloading files. Just register a [network driver](#network-driver) and get going.
 
 ## Upload a file 🌐
 
@@ -63,28 +42,32 @@ Storage.upload(
   fileName: String?,
   fileExtension: String?,
   mime: String?,
-  folder: String
+  folder: String,
+  on container: Container 
 ) throws -> String
 ```
 The aforementioned function will attempt to upload the file using your [selected driver and template](#configuration-) and will return a `String` representing the location of the file.
 
 If you want to upload an image named `profile.png` your call site would look like:
 ```swift
-let path = try Storage.upload(bytes: bytes, fileName: "profile.png")
-print(path) //prints `/profile.png`
+try Storage.upload(
+  bytes: bytes,
+  fileName: "profile.png",
+  on: req
+)
 ```
 
 #### Base64 and data URI 📡
 Is your file a base64 or data URI? No problem!
 ```swift
-Storage.upload(base64: "SGVsbG8sIFdvcmxkIQ==", fileName: "base64.txt")
-Storage.upload(dataURI: "data:,Hello%2C%20World!", fileName: "data-uri.txt")
+Storage.upload(base64: "SGVsbG8sIFdvcmxkIQ==", fileName: "base64.txt", on: req)
+Storage.upload(dataURI: "data:,Hello%2C%20World!", fileName: "data-uri.txt", on: req)
 ```
 
 #### Remote resources 
 Download an asset from a URL and then reupload it to your storage server.
 ```swift
-Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png")
+Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png", on: req)
 ```
 
 
@@ -93,7 +76,7 @@ Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png")
 To download a file that was previously uploaded you simply use the generated path.
 ```swift
 //download image as `Foundation.Data`
-let data = try Storage.get("/images/profile.png")
+let data = try Storage.get("/images/profile.png", on: req)
 ```
 
 
@@ -128,18 +111,18 @@ try Storage.delete("/images/profile.png")
 
 #### Network driver 🔨
 The network driver is the module responsible for interacting with your 3rd party service. The default, and currently the only, driver is `s3`.
-```json
-{
-  "driver": "s3",
-  "bucket": "$AWS_S3_BUCKET",
-  "accessKey": "$AWS_ACCESS_KEY",
-  "secretKey": "$AWS_SECRET_KEY",
-  "host": "s3.amazonaws.com",
-  "cdnUrl": "$CDN_BASE_URL",
-  "region": "eu-west-1"
-}
+```swift
+import Storage
+
+let driver = S3Driver(
+  bucket: "bucket", 
+  accessKey: "access",
+  secretKey: "secret"
+)
+
+services.register(driver)
 ```
-The `driver` key is optional and will default to `s3`. `accessKey` and `secretKey` are both required by the S3 driver, while `host`, `bucket` and `region` are all optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com` if not provided. The above example uses the environment variables as provided by [Vapor Cloud](https://vapor.cloud/), but you can change this to use hardcoded values although this is not recommended. Another option is to use "fallback values" which can be achieved by using the `:` notion. For example `$AWS_S3_BUCKET:my-bucket` will fallback to `my-bucket` when the `AWS_S3_BUCKET` environment variable is not present.
+`bucket`, `accessKey`and `secretKey` are required by the S3 driver, while `template`, `host` and `region` are optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com`.
 
 #### Upload path 🛣
 A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/#file`.

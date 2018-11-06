@@ -1,11 +1,27 @@
+// swift-tools-version:4.2
 import PackageDescription
 
 let package = Package(
     name: "Storage",
+    products: [
+        .library(
+            name: "Storage",
+            targets: ["Storage"]
+        )
+    ],
     dependencies: [
-        .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
-        .Package(url: "https://github.com/nodes-vapor/data-uri.git", majorVersion: 1),
-        .Package(url: "https://github.com/nodes-vapor/aws.git", majorVersion: 1),
-        .Package(url: "https://github.com/manGoweb/MimeLib.git", majorVersion: 1)
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
+    ],
+    targets: [
+        .target(
+            name: "Storage",
+            dependencies: [
+                "Vapor"
+            ]
+        ),
+        .testTarget(
+            name: "StorageTests",
+            dependencies: ["Storage"]
+        )
     ]
 )
