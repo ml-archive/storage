@@ -24,11 +24,26 @@ A package to ease the use of multiple storage and CDN services.
 
 ## 📦 Installation
 
-Update your `Package.swift` file.
+Add `Storage` to the package dependencies (in your `Package.swift` file):
 ```swift
-.Package(url: "https://github.com/nodes-vapor/storage.git", majorVersion: 0)
+dependencies: [
+    ...,
+    .package(url: "https://github.com/nodes-vapor/storage.git", from: "1.0.0-beta")
+]
 ```
 
+as well as to your target (e.g. "App"):
+
+```swift
+targets: [
+    ...
+    .target(
+        name: "App",
+        dependencies: [... "Storage" ...]
+    ),
+    ...
+]
+```
 
 ## Getting started 🚀
 Storage makes it easy to start uploading and downloading files. Just register a [network driver](#network-driver) and get going.
@@ -38,12 +53,12 @@ Storage makes it easy to start uploading and downloading files. Just register a 
 There are a few different interfaces for uploading a file, the simplest being the following:
 ```swift
 Storage.upload(
-  bytes: [UInt8],
-  fileName: String?,
-  fileExtension: String?,
-  mime: String?,
-  folder: String,
-  on container: Container 
+    bytes: [UInt8],
+    fileName: String?,
+    fileExtension: String?,
+    mime: String?,
+    folder: String,
+    on container: Container 
 ) throws -> String
 ```
 The aforementioned function will attempt to upload the file using your [selected driver and template](#configuration-) and will return a `String` representing the location of the file.
@@ -51,9 +66,9 @@ The aforementioned function will attempt to upload the file using your [selected
 If you want to upload an image named `profile.png` your call site would look like:
 ```swift
 try Storage.upload(
-  bytes: bytes,
-  fileName: "profile.png",
-  on: req
+    bytes: bytes,
+    fileName: "profile.png",
+    on: req
 )
 ```
 
@@ -75,7 +90,7 @@ Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png", on
 
 To download a file that was previously uploaded you simply use the generated path.
 ```swift
-//download image as `Foundation.Data`
+// download image as `Foundation.Data`
 let data = try Storage.get("/images/profile.png", on: req)
 ```
 
@@ -115,9 +130,9 @@ The network driver is the module responsible for interacting with your 3rd party
 import Storage
 
 let driver = S3Driver(
-  bucket: "bucket", 
-  accessKey: "access",
-  secretKey: "secret"
+    bucket: "bucket", 
+    accessKey: "access",
+    secretKey: "secret"
 )
 
 services.register(driver)
