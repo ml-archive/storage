@@ -29,7 +29,7 @@ extension DataURIParser {
         }
 
         var scanner: Scanner<UInt8> = Scanner(uri.bytes)
-        //pop scheme ("data:")
+        //pop the bytes "data:"
         scanner.pop(5)
 
         var parser = DataURIParser(scanner: scanner)
