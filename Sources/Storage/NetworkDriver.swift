@@ -4,7 +4,7 @@ import Foundation
 
 public protocol NetworkDriver: Service {
     var pathBuilder: PathBuilder { get set }
-    
+
     @discardableResult
     func upload(entity: inout FileEntity, on container: Container) throws -> Future<String>
     func get(path: String, on container: Container) throws -> Future<[UInt8]>
@@ -17,10 +17,10 @@ public final class S3Driver: NetworkDriver {
         case missingFileExtensionAndType
         case pathMissingForwardSlash
     }
-    
+
     public var pathBuilder: PathBuilder
     var s3: S3
-    
+
     public init(
         bucket: String,
         host: String = "s3.amazonaws.com",
@@ -37,29 +37,29 @@ public final class S3Driver: NetworkDriver {
             region: region
         )
     }
-    
+
     @discardableResult
     public func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
-        
+
         entity.sanitize()
-        
+
         if entity.fileExtension == nil {
             guard entity.loadFileExtensionFromMime() else {
                 throw Error.missingFileExtensionAndType
             }
         }
-        
+
         if entity.mime == nil {
             guard entity.loadMimeFromFileExtension() else {
                 throw Error.missingFileExtensionAndType
             }
         }
-        
+
         let path = try pathBuilder.build(entity: entity)
-        
+
         guard path.hasPrefix("/") else {
             print("The S3 driver requires your path to begin with `/`")
             print("Please check `template` in `storage.json`.")
@@ -75,11 +75,11 @@ public final class S3Driver: NetworkDriver {
             return path
         }
     }
-    
+
     public func get(path: String, on container: Container) throws -> Future<[UInt8]> {
         return container.future([])
     }
-    
+
     public func delete(path: String, on container: Container) throws -> Future<Void> {
         return container.future()
     }

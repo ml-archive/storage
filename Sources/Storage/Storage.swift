@@ -11,9 +11,9 @@ public class Storage {
     }
 
     static var cdnBaseURL: String?
-    
+
     public static var cdnPathBuilder: ((String, String) -> String)?
-    
+
     /**
         Uploads the given `FileEntity`.
      
@@ -27,7 +27,7 @@ public class Storage {
         let networkDriver = try container.make(NetworkDriver.self)
         return try networkDriver.upload(entity: &entity, on: container)
     }
-    
+
     /**
         Uploads bytes to a storage server.
      
@@ -56,10 +56,10 @@ public class Storage {
             folder: folder,
             mime: mime
         )
-        
+
         return try upload(entity: &entity, on: container)
     }
-    
+
     /**
         Decodes and uploads a data URI.
      
@@ -89,7 +89,7 @@ public class Storage {
             on: container
         )
     }
-    
+
     /**
         Downloads the file at `path`.
      
@@ -102,37 +102,37 @@ public class Storage {
         let networkDriver = try container.make(NetworkDriver.self)
         return try networkDriver.get(path: path, on: container)
     }
-    
+
     /// Appends the asset's path with the base CDN URL.
     public static func getCDNPath(for path: String) throws -> String {
         guard let cdnBaseURL = cdnBaseURL else {
             throw Error.cdnBaseURLNotSet
         }
-        
+
         if let cdnPathBuilder = cdnPathBuilder {
             return cdnPathBuilder(cdnBaseURL, path)
         }
-        
+
         return cdnBaseURL + path
     }
-    
+
     /// Appends the asset's path with the base CDN URL. With support for optional
     public static func getCDNPath(optional path: String?) throws -> String? {
         guard let pathUnwrapped = path else {
             return nil
         }
-        
+
         guard let cdnBaseURL = cdnBaseURL else {
             throw Error.cdnBaseURLNotSet
         }
-        
+
         if let cdnPathBuilder = cdnPathBuilder {
             return cdnPathBuilder(cdnBaseURL, pathUnwrapped)
         }
-        
+
         return cdnBaseURL + pathUnwrapped
     }
-    
+
     /**
         Deletes the file at `path`.
      

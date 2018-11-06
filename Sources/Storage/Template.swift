@@ -9,7 +9,7 @@ extension UInt8 {
 
 struct Template {
     let calendar = Calendar(identifier: .gregorian)
-    
+
     enum Error: Swift.Error {
         case invalidAlias(String)
         case failedToExtractDate
@@ -20,7 +20,7 @@ struct Template {
         case mimeNotProvided
         case mimeFolderNotProvided
     }
-    
+
     enum Alias: String {
         case file           = "#file"
         case fileName       = "#fileName"
@@ -34,15 +34,15 @@ struct Template {
         case timestamp      = "#timestamp"
         case uuid           = "#uuid"
     }
-    
+
     enum PathPart {
         case literal([UInt8])
         case alias(Alias)
     }
-    
+
     var scanner: Scanner<UInt8>
     var parts: [PathPart] = []
-    
+
     init(scanner: Scanner<UInt8>) {
         self.scanner = scanner
     }
@@ -51,22 +51,22 @@ struct Template {
 extension Template {
     static func compile(_ templateString: String) throws -> Template {
         var template = Template(scanner: Scanner(templateString.bytes))
-        
+
         while let part = try template.extractPart() {
             template.parts.append(part)
         }
-        
+
         return template
     }
-    
+
     func renderPath(
         for entity: FileEntity,
         _ mimeFolderBuilder: (String?) -> String?
     ) throws -> String {
         let dateComponents = getDateComponents()
-        
+
         var pathUInt8s: [UInt8] = []
-        
+
         for part in parts {
             switch part {
             case .literal(let bytes):
@@ -78,55 +78,55 @@ extension Template {
                         throw Error.malformedFileName
                     }
                     pathUInt8s += fullFileName.bytes
-                    
+
                 case .fileName:
                     guard let fileName = entity.fileName else {
                         throw Error.fileNameNotProvided
                     }
                     pathUInt8s += fileName.bytes
-                    
+
                 case .fileExtension:
                     guard let fileExtension = entity.fileExtension else {
                         throw Error.fileExtensionNotProvided
                     }
                     pathUInt8s += fileExtension.bytes
-                    
+
                 case .folder:
                     guard let folder = entity.folder else {
                         throw Error.folderNotProvided
                     }
                     pathUInt8s += folder.bytes
-                    
+
                 case .mime:
                     guard let mime = entity.mime else {
                         throw Error.mimeNotProvided
                     }
                     pathUInt8s += mime.bytes
-                    
+
                 case .mimeFolder:
                     guard let mimeFolder = mimeFolderBuilder(entity.mime) else {
                         throw Error.mimeFolderNotProvided
                     }
                     pathUInt8s += mimeFolder.bytes
-                    
+
                 case .day:
                     guard let day = dateComponents.day else {
                         throw Error.failedToExtractDate
                     }
                     pathUInt8s += "\(day)".bytes
-                    
+
                 case .month:
                     guard let month = dateComponents.month else {
                         throw Error.failedToExtractDate
                     }
                     pathUInt8s += "\(month)".bytes
-                    
+
                 case .year:
                     guard let year = dateComponents.year else {
                         throw Error.failedToExtractDate
                     }
                     pathUInt8s += "\(year)".bytes
-                    
+
                 case .timestamp:
                     guard
                         let hours = dateComponents.hour,
@@ -137,14 +137,14 @@ extension Template {
                     }
                     let time = formatTime(hours: hours, minutes: minutes, seconds: seconds)
                     pathUInt8s += time.bytes
-                    
+
                 case .uuid:
                     let uuidUInt8s = UUID().uuidString.bytes
                     pathUInt8s += uuidUInt8s
                 }
             }
         }
-        
+
         return String(bytes: pathUInt8s, encoding: .utf8) ?? ""
     }
 }
@@ -152,7 +152,7 @@ extension Template {
 extension Template {
     mutating func extractPart() throws -> PathPart? {
         guard let byte = scanner.peek() else { return nil }
-        
+
         if byte == UInt8.octothorp {
             return try extractAlias()
         } else {
@@ -184,20 +184,20 @@ extension Template {
         insert(into: _trie, Alias.uuid)
         return _trie
     }()
-    
+
     mutating func extractAlias() throws -> PathPart {
         var partial: [UInt8] = []
-        
+
         var peeked = 0
         defer { scanner.pop(peeked) }
-        
+
         var current = Template.trie
-        
+
         while let byte = scanner.peek(aheadBy: peeked) {
             peeked += 1
-            
+
             guard let next = current[byte] else { break }
-            
+
             if let value = next.value {
                 if let nextUInt8 = scanner.peek(aheadBy: peeked) {
                     guard next[nextUInt8] != nil else {
@@ -207,10 +207,10 @@ extension Template {
                     current = next
                     continue
                 }
-                
+
                 return .alias(value)
             }
-            
+
             partial.append(byte)
             current = next
         }
@@ -218,12 +218,12 @@ extension Template {
         let invalidAlias = String(bytes: partial, encoding: .utf8) ?? ""
         throw Error.invalidAlias(invalidAlias)
     }
-    
+
     mutating func extractLiteral() -> PathPart {
         var partial: [UInt8] = []
         var peeked = 0
         defer { scanner.pop(peeked) }
-        
+
         while
             let byte = scanner.peek(aheadBy: peeked),
             byte != UInt8.octothorp
@@ -231,7 +231,7 @@ extension Template {
             peeked += 1
             partial.append(byte)
         }
-        
+
         return .literal(partial)
     }
 }
@@ -243,16 +243,16 @@ extension Template {
             from: Date()
         )
     }
-    
+
     func padDigitLeft(_ digit: Int) -> String {
         return digit < 10 ? "0\(digit)" : "\(digit)"
     }
-    
+
     func formatTime(hours: Int, minutes: Int, seconds: Int) -> String {
         let hours = padDigitLeft(hours)
         let minutes = padDigitLeft(minutes)
         let seconds = padDigitLeft(seconds)
-        
+
         return "\(hours):\(minutes):\(seconds)"
     }
 }
@@ -269,7 +269,7 @@ extension Template.Error: Equatable {
              (.mimeNotProvided, .mimeNotProvided),
              (.mimeFolderNotProvided, .mimeFolderNotProvided):
             return true
-            
+
         default:
             return false
         }
@@ -281,10 +281,10 @@ extension Template.PathPart: Equatable {
         switch (lhs, rhs) {
         case (.literal(let a), literal(let b)):
             return a == b
-            
+
         case (.alias(let a), .alias(let b)):
             return a == b
-            
+
         default:
             return false
         }

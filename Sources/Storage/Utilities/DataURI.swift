@@ -57,7 +57,7 @@ extension DataURIParser {
             throw Error.invalidURI
         }
 
-        var typeMetadata: [UInt8]? = nil
+        var typeMetadata: [UInt8]?
 
         if byte == .semicolon {
             typeMetadata = try extractTypeMetadata()

@@ -12,11 +12,11 @@ public extension PathBuilder {
 
 public struct ConfigurablePathBuilder: PathBuilder {
     var template: Template
-    
+
     public init(template: String) throws {
         self.template = try Template.compile(template)
     }
-    
+
     public func build(entity: FileEntity) throws -> String {
         return try template.renderPath(for: entity, generateFolder)
     }

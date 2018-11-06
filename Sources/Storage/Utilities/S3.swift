@@ -203,7 +203,7 @@ extension AWSSignatureV4 {
         }
     }
 
-    func alphabetize(_ dict: [String : String]) -> [(key: String, value: String)] {
+    func alphabetize(_ dict: [String: String]) -> [(key: String, value: String)] {
         return dict.sorted(by: { $0.0.lowercased() < $1.0.lowercased() })
     }
 
@@ -240,8 +240,8 @@ extension AWSSignatureV4 {
         method: Method = .get,
         path: String,
         query: String? = nil,
-        headers: [String : String] = [:]
-    ) throws -> [String : String] {
+        headers: [String: String] = [:]
+    ) throws -> [String: String] {
         let algorithm = "AWS4-HMAC-SHA256"
         let credentialScope = getCredentialScope()
         let payloadHash = try payload.hashed()
