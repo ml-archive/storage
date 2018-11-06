@@ -37,7 +37,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v4-spm-deps-{{ checksum "Package.swift" }}
+            - v2-spm-deps-{{ checksum "Package.swift" }}
       - run:
           name: Copy Package file
           command: cp Package.swift res
