@@ -166,7 +166,7 @@ public struct AWSSignatureV4 {
         query: String,
         canonicalHeaders: String,
         signedHeaders: String
-        ) throws -> String {
+    ) throws -> String {
         let path = path.addingPercentEncoding(withAllowedCharacters: String.awsPathAllowed) ?? ""
         let query = query.addingPercentEncoding(withAllowedCharacters: String.awsQueryAllowed) ?? ""
         return [
@@ -194,7 +194,7 @@ extension AWSSignatureV4 {
         headers: inout [String: String],
         host: String,
         hash: String
-        ) {
+    ) {
         headers["Host"] = host
         headers["X-Amz-Date"] = amzDate
 
@@ -218,22 +218,22 @@ extension AWSSignatureV4 {
         credentialScope: String,
         signature: String,
         signedHeaders: String
-        ) -> String {
+    ) -> String {
         return "\(algorithm) Credential=\(accessKey)/\(credentialScope), SignedHeaders=\(signedHeaders), Signature=\(signature)"
     }
 }
 
 extension AWSSignatureV4 {
     /**
-     Sign a request to be sent to an AWS API.
-     - returns:
-     A dictionary with headers to attach to a request
-     - parameters:
-     - payload: A hash of this data will be included in the headers
-     - method: Type of HTTP request
-     - path: API call being referenced
-     - query: Additional querystring in key-value format ("?key=value&key2=value2")
-     - headers: HTTP headers added to the request
+         Sign a request to be sent to an AWS API.
+         - returns:
+         A dictionary with headers to attach to a request
+         - parameters:
+         - payload: A hash of this data will be included in the headers
+         - method: Type of HTTP request
+         - path: API call being referenced
+         - query: Additional querystring in key-value format ("?key=value&key2=value2")
+         - headers: HTTP headers added to the request
      */
     public func sign(
         payload: Payload = .none,
@@ -241,7 +241,7 @@ extension AWSSignatureV4 {
         path: String,
         query: String? = nil,
         headers: [String : String] = [:]
-        ) throws -> [String : String] {
+    ) throws -> [String : String] {
         let algorithm = "AWS4-HMAC-SHA256"
         let credentialScope = getCredentialScope()
         let payloadHash = try payload.hashed()
