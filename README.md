@@ -1,6 +1,6 @@
 # Storage 🗄
 [![Swift Version](https://img.shields.io/badge/Swift-4.2-brightgreen.svg)](http://swift.org)
-[![Vapor Version](https://img.shields.io/badge/Vapor-3-F6CBCA.svg)](http://vapor.codes)
+[![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/storage/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/storage)
 [![codebeat badge](https://codebeat.co/badges/58eeca2c-7b58-4aea-9b09-d80e3b79de19)](https://codebeat.co/projects/github-com-nodes-vapor-storage-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/storage/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/storage)
