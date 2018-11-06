@@ -46,7 +46,7 @@ targets: [
 ```
 
 ## Getting started 🚀
-Storage makes it easy to start uploading and downloading files. Just register a [network driver](#network-driver) and get going.
+Storage makes it easy to start uploading and downloading files. Just register a [network driver](#network-driver-) and get going.
 
 ## Upload a file 🌐
 
