@@ -129,7 +129,7 @@ The network driver is the module responsible for interacting with your 3rd party
 ```swift
 import Storage
 
-let driver = S3Driver(
+let driver = try S3Driver(
     bucket: "bucket", 
     accessKey: "access",
     secretKey: "secret"
