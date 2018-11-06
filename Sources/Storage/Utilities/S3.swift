@@ -131,7 +131,7 @@ public struct AWSSignatureV4 {
         date: String,
         scope: String,
         canonicalHash: String
-        ) -> String {
+    ) -> String {
         return [
             algorithm,
             date,
@@ -210,7 +210,7 @@ extension AWSSignatureV4 {
     func createCanonicalHeaders(_ headers: [(key: String, value: String)]) -> String {
         return headers.map {
             "\($0.key.lowercased()):\($0.value)"
-            }.joined(separator: "\n")
+        }.joined(separator: "\n")
     }
 
     func createAuthorizationHeader(
