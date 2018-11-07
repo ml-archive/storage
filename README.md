@@ -146,11 +146,16 @@ services.register(driver)
 `bucket`, `accessKey`and `secretKey` are required by the S3 driver, while `template`, `host` and `region` are optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com`.
 
 #### Upload path 🛣
-A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by adding the `"template"` field to your `Config/storage.json`. If the field is omitted it will default to `/#file`.
+A times, you may need to upload files to a different scheme than `/file.ext`. You can achieve this by passing in the `pathTemplate` parameter when creating the `S3Driver`. If the parameter is omitted it will default to `/#file`.
 
 The following template will upload `profile.png` from the folder `images` to `/myapp/images/profile.png`
-```json
-"template": "/myapp/#folder/#file"
+```swift
+let driver = try S3Driver(
+    bucket: "mybucket",
+    accessKey: "myaccesskey",
+    secretKey: "mysecretkey",
+    pathTemplate: "/myapp/#folder/#file"
+)
 ```
 
 ##### Aliases
