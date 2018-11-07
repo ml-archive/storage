@@ -10,7 +10,7 @@ public class Storage {
         case missingFileName
     }
 
-    static var cdnBaseURL: String?
+    public static var cdnBaseURL: String?
 
     public static var cdnPathBuilder: ((String, String) -> String)?
 

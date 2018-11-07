@@ -97,6 +97,12 @@ let data = try Storage.get("/images/profile.png", on: req)
 
 ## Get CDN path
 
+In order to use the CDN path convenience, you'll have to set the CDN base url on Storage, e.g. in your `configure.swift` file:
+
+```swift
+Storage.cdnBaseURL = "https://cdn.vapor.cloud"
+```
+
 Here is how you generate the CDN path to a given asset.
 ```swift
 let cdnPath = Storage.getCDNPath(for: path)
