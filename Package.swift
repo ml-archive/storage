@@ -5,7 +5,7 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
         .Package(url: "https://github.com/nodes-vapor/data-uri.git", majorVersion: 1),
-        .Package(url: "https://github.com/chili-ios/aws.git", majorVersion: 2.1.1),
+        .Package(url: "https://github.com/chili-ios/aws.git", .upToNextMajor( from: "2.1.1")),
         .Package(url: "https://github.com/manGoweb/MimeLib.git", majorVersion: 1)
     ]
 )
