@@ -109,7 +109,7 @@ public struct AWSSignatureV4 {
     var amzDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.dateFormat = "YYYYMMdd'T'HHmmss'Z'"
+        dateFormatter.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
         return dateFormatter.string(from: unitTestDate ?? Date())
     }
 
