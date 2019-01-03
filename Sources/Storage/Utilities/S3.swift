@@ -40,6 +40,7 @@ public enum Region {
         }
     }
 
+    // codebeat:disable[CYCLO,ABC]
     var code: String {
         switch self {
         case .usEast1: return "us-east-1"
@@ -59,6 +60,7 @@ public enum Region {
         case .custom(let code): return code
         }
     }
+    // codebeat:enable[CYCLO,ABC]
 }
 
 public enum Payload {
