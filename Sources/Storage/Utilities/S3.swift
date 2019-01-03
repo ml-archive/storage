@@ -57,8 +57,8 @@ public enum Region {
         case .apNortheast2: return "ap-northeast-2"
         case .saEast1: return "sa-east-1"
         case .custom(let code): return code
+        }
     }
-  }
 }
 
 public enum Payload {
