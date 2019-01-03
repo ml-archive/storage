@@ -3,21 +3,22 @@ import Vapor
 import Crypto
 import Foundation
 
-public enum Region: String {
-    case usEast1 = "us-east-1"
-    case usEast2 = "us-east-2"
-    case usWest1 = "us-west-1"
-    case usWest2 = "us-west-2"
-    case euWest1 = "eu-west-1"
-    case euWest2 = "eu-west-2"
-    case euWest3 = "eu-west-3"
-    case euCentral1 = "eu-central-1"
-    case apSouth1 = "ap-south-1"
-    case apSoutheast1 = "ap-southeast-1"
-    case apSoutheast2 = "ap-southeast-2"
-    case apNortheast1 = "ap-northeast-1"
-    case apNortheast2 = "ap-northeast-2"
-    case saEast1 = "sa-east-1"
+public enum Region {
+    case usEast1
+    case usEast2
+    case usWest1
+    case usWest2
+    case euWest1
+    case euWest2
+    case euWest3
+    case euCentral1
+    case apSouth1
+    case apSoutheast1
+    case apSoutheast2
+    case apNortheast1
+    case apNortheast2
+    case saEast1
+    case custom(code: String)
 
     public var host: String {
         switch self {
@@ -35,8 +36,29 @@ public enum Region: String {
         case .apNortheast1: return "s3-ap-northeast-1.amazonaws.com"
         case .apNortheast2: return "s3.ap-northeast-2.amazonaws.com"
         case .saEast1: return "s3-sa-east-1.amazonaws.com"
+        case .custom(let code): return "s3-\(code).amazonaws.com"
         }
     }
+
+    var code: String {
+        switch self {
+        case .usEast1: return "us-east-1"
+        case .usEast2: return "us-east-2"
+        case .usWest1: return "us-west-1"
+        case .usWest2: return "us-west-2"
+        case .euWest1: return "eu-west-1"
+        case .euWest2: return "eu-west-2"
+        case .euWest3: return "eu-west-3"
+        case .euCentral1: return "eu-central-1"
+        case .apSouth1: return "ap-south-1"
+        case .apSoutheast1: return "ap-southeast-1"
+        case .apSoutheast2: return "ap-southeast-2"
+        case .apNortheast1: return "ap-northeast-1"
+        case .apNortheast2: return "ap-northeast-2"
+        case .saEast1: return "sa-east-1"
+        case .custom(let code): return code
+    }
+  }
 }
 
 public enum Payload {
@@ -126,7 +148,7 @@ public struct AWSSignatureV4 {
     ) {
         self.service = service
         self.host = host
-        self.region = region.rawValue
+        self.region = region.code
         self.accessKey = accessKey
         self.secretKey = secretKey
     }
