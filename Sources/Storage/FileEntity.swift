@@ -32,6 +32,9 @@ public struct FileEntity {
     /// The type of the file.
     var mime: String?
 
+    /// The ACL
+    var access: AccessControlList
+
     /**
         FileEntity's default initializer.
      
@@ -47,14 +50,15 @@ public struct FileEntity {
         fileName: String? = nil,
         fileExtension: String? = nil,
         folder: String? = nil,
-        mime: String? = nil
+        mime: String? = nil,
+        access: AccessControlList = .publicRead
     ) {
         self.bytes = bytes
         self.fileName = fileName
         self.fileExtension = fileExtension
         self.folder = folder
         self.mime = mime
-
+        self.access = access
         sanitize()
     }
 }

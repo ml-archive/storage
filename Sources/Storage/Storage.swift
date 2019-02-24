@@ -47,6 +47,7 @@ public class Storage {
         fileExtension: String? = nil,
         mime: String? = nil,
         folder: String? = nil,
+        access: AccessControlList = .publicRead,
         on container: Container
     ) throws -> Future<String> {
         var entity = FileEntity(
@@ -54,7 +55,8 @@ public class Storage {
             fileName: fileName,
             fileExtension: fileExtension,
             folder: folder,
-            mime: mime
+            mime: mime,
+            access: access
         )
 
         return try upload(entity: &entity, on: container)

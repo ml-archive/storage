@@ -70,7 +70,7 @@ public final class S3Driver: NetworkDriver {
         return try s3.upload(
             bytes: Data(bytes),
             path: path,
-            access: .publicRead,
+            access: entity.access,
             mime: entity.mime,
             on: container
         ).map { _ in
