@@ -265,7 +265,7 @@ extension AWSSignerTestSuite {
         var auth = AWSSignatureV4(
             service: "service",
             host: host,
-            region: .usEast1,
+            region: Region.usEast1.rawValue,
             accessKey: "AKIDEXAMPLE",
             secretKey: "wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY"
         )
