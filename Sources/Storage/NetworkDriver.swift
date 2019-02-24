@@ -27,6 +27,7 @@ public final class S3Driver: NetworkDriver {
         accessKey: String,
         secretKey: String,
         region: Region = .euWest1,
+        customRegion: String? = nil,
         pathTemplate: String = ""
     ) throws {
         self.pathBuilder = try ConfigurablePathBuilder(template: pathTemplate)
@@ -34,7 +35,7 @@ public final class S3Driver: NetworkDriver {
             host: "\(bucket).\(host)",
             accessKey: accessKey,
             secretKey: secretKey,
-            region: region
+            region: customRegion ?? region.rawValue
         )
     }
 
@@ -70,6 +71,7 @@ public final class S3Driver: NetworkDriver {
             bytes: Data(bytes),
             path: path,
             access: .publicRead,
+            mime: entity.mime,
             on: container
         ).map { _ in
             return path

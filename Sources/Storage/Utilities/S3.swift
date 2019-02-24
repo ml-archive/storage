@@ -116,13 +116,13 @@ public struct AWSSignatureV4 {
     public init(
         service: String,
         host: String,
-        region: Region,
+        region: String,
         accessKey: String,
         secretKey: String
     ) {
         self.service = service
         self.host = host
-        self.region = region.rawValue
+        self.region = region
         self.accessKey = accessKey
         self.secretKey = secretKey
     }
@@ -303,6 +303,7 @@ public struct S3: Service {
         case unimplemented
         case invalidPath
         case invalidResponse(HTTPStatus)
+        case invalidMimeType(String)
     }
 
     let signer: AWSSignatureV4
@@ -312,7 +313,7 @@ public struct S3: Service {
         host: String,
         accessKey: String,
         secretKey: String,
-        region: Region
+        region: String
     ) {
         self.host = host
         signer = AWSSignatureV4(
@@ -328,6 +329,7 @@ public struct S3: Service {
         bytes: Data,
         path: String,
         access: AccessControlList = .publicRead,
+        mime: String?,
         on container: Container
     ) throws -> Future<Response> {
         guard let url = URL(string: generateURL(for: path)) else {
@@ -352,6 +354,12 @@ public struct S3: Service {
         req.http.headers = headers
         req.http.body = HTTPBody(data: bytes)
         req.http.url = url
+        if let mimeType = mime {
+            guard let mediaType = MediaType.parse(mimeType) else {
+                throw Error.invalidMimeType(mimeType)
+            }
+            req.http.contentType = mediaType
+        }
         return client.send(req)
     }
 }
