@@ -21,6 +21,10 @@ public struct Region {
   public static var apNortheast2: Region = .init(code: "ap-northeast-2")
   public static var saEast1: Region = .init(code: "sa-east-1")
 
+  public init(code: String) {
+    self.code = code 
+  }
+  
   public var host: String {
     return "s3-\(code).amazonaws.com"
   }
