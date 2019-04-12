@@ -97,7 +97,6 @@ public struct AWSSignatureV4 {
     let region: String
     let accessKey: String
     let secretKey: String
-    let contentType = "application/x-www-form-urlencoded; charset=utf-8"
 
     internal var unitTestDate: Date?
 
@@ -226,6 +225,7 @@ extension AWSSignatureV4 {
          A dictionary with headers to attach to a request
          - parameters:
          - payload: A hash of this data will be included in the headers
+         - contentType: Mime type of file
          - method: Type of HTTP request
          - path: API call being referenced
          - query: Additional querystring in key-value format ("?key=value&key2=value2")
@@ -233,6 +233,7 @@ extension AWSSignatureV4 {
      */
     public func sign(
         payload: Payload = .none,
+        contentType: String,
         method: Method = .get,
         path: String,
         query: String? = nil,
@@ -322,6 +323,7 @@ public struct S3: Service {
     public func upload(
         bytes: Data,
         path: String,
+        contentType: String = "application/x-www-form-urlencoded; charset=utf-8",
         access: AccessControlList = .publicRead,
         on container: Container
     ) throws -> Future<Response> {
@@ -331,6 +333,7 @@ public struct S3: Service {
 
         let signedHeaders = try signer.sign(
             payload: .bytes(bytes),
+            contentType: contentType,
             method: .put,
             path: path,
             headers: ["x-amz-acl": access.rawValue]

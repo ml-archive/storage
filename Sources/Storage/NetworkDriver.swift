@@ -51,11 +51,13 @@ public final class S3Driver: NetworkDriver {
                 throw Error.missingFileExtensionAndType
             }
         }
-
+        
         if entity.mime == nil {
-            guard entity.loadMimeFromFileExtension() else {
-                throw Error.missingFileExtensionAndType
-            }
+            entity.loadMimeFromFileExtension()
+        }
+        
+        guard let mime = entity.mime else {
+            throw Error.missingFileExtensionAndType
         }
 
         let path = try pathBuilder.build(entity: entity)
@@ -65,11 +67,12 @@ public final class S3Driver: NetworkDriver {
             print("Please check `template` in `storage.json`.")
             throw Error.pathMissingForwardSlash
         }
-
+        
         return try s3.upload(
             bytes: Data(bytes),
             path: path,
-            access: .publicRead,
+            contentType: mime,
+            access: .privateAccess,
             on: container
         ).map { res in
             guard
