@@ -38,8 +38,32 @@ public final class S3Driver: NetworkDriver {
         )
     }
 
-    @discardableResult
+    public func upload(
+        bytes: Data,
+        fileName: String? = nil,
+        fileExtension: String? = nil,
+        mime: String? = nil,
+        folder: String? = nil,
+        access: AccessControlList,
+        on container: Container
+    ) throws -> Future<String> {
+        var entity = FileEntity(
+            bytes: bytes,
+            fileName: fileName,
+            fileExtension: fileExtension,
+            folder: folder,
+            mime: mime
+        )
+
+        return try upload(entity: &entity, access: access, on: container)
+    }
+
     public func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
+        return try upload(entity: &entity, access: .publicRead, on: container)
+    }
+
+    @discardableResult
+    public func upload(entity: inout FileEntity, access: AccessControlList, on container: Container) throws -> Future<String> {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
@@ -72,7 +96,7 @@ public final class S3Driver: NetworkDriver {
             bytes: Data(bytes),
             path: path,
             contentType: mime,
-            access: .privateAccess,
+            access: access,
             on: container
         ).map { res in
             guard
