@@ -75,7 +75,7 @@ public final class S3Driver: NetworkDriver {
                 throw Error.missingFileExtensionAndType
             }
         }
-        
+
         if entity.mime == nil {
             entity.loadMimeFromFileExtension()
         }
@@ -91,7 +91,7 @@ public final class S3Driver: NetworkDriver {
             print("Please check `template` in `storage.json`.")
             throw Error.pathMissingForwardSlash
         }
-        
+
         return try s3.upload(
             bytes: Data(bytes),
             path: path,
@@ -100,7 +100,7 @@ public final class S3Driver: NetworkDriver {
             on: container
         ).map { res in
             guard
-                res.http.status.code == 200
+                res.http.status == .ok
             else {
                 throw Abort(.internalServerError, reason: res.http.body.description)
             }
