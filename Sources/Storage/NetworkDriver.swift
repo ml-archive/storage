@@ -99,9 +99,7 @@ public final class S3Driver: NetworkDriver {
             access: access,
             on: container
         ).map { res in
-            guard
-                res.http.status == .ok
-            else {
+            guard res.http.status == .ok else {
                 throw Abort(.internalServerError, reason: res.http.body.description)
             }
 
