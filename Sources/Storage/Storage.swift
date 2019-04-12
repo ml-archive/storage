@@ -23,7 +23,10 @@ public class Storage {
         - Returns: The path the file was uploaded to.
      */
     @discardableResult
-    public static func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
+    public static func upload(
+        entity: inout FileEntity,
+        on container: Container
+    ) throws -> Future<String> {
         let networkDriver = try container.make(NetworkDriver.self)
         return try networkDriver.upload(entity: &entity, on: container)
     }

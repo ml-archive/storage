@@ -71,7 +71,13 @@ public final class S3Driver: NetworkDriver {
             path: path,
             access: .publicRead,
             on: container
-        ).map { _ in
+        ).map { res in
+            guard
+                res.http.status.code == 200
+            else {
+                throw Abort(.internalServerError, reason: res.http.body.description)
+            }
+
             return path
         }
     }
