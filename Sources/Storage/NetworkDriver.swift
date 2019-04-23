@@ -38,8 +38,32 @@ public final class S3Driver: NetworkDriver {
         )
     }
 
-    @discardableResult
+    public func upload(
+        bytes: Data,
+        fileName: String? = nil,
+        fileExtension: String? = nil,
+        mime: String? = nil,
+        folder: String? = nil,
+        access: AccessControlList,
+        on container: Container
+    ) throws -> Future<String> {
+        var entity = FileEntity(
+            bytes: bytes,
+            fileName: fileName,
+            fileExtension: fileExtension,
+            folder: folder,
+            mime: mime
+        )
+
+        return try upload(entity: &entity, access: access, on: container)
+    }
+
     public func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
+        return try upload(entity: &entity, access: .publicRead, on: container)
+    }
+
+    @discardableResult
+    public func upload(entity: inout FileEntity, access: AccessControlList, on container: Container) throws -> Future<String> {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
@@ -53,9 +77,11 @@ public final class S3Driver: NetworkDriver {
         }
 
         if entity.mime == nil {
-            guard entity.loadMimeFromFileExtension() else {
-                throw Error.missingFileExtensionAndType
-            }
+            entity.loadMimeFromFileExtension()
+        }
+        
+        guard let mime = entity.mime else {
+            throw Error.missingFileExtensionAndType
         }
 
         let path = try pathBuilder.build(entity: entity)
@@ -69,9 +95,14 @@ public final class S3Driver: NetworkDriver {
         return try s3.upload(
             bytes: Data(bytes),
             path: path,
-            access: .publicRead,
+            contentType: mime,
+            access: access,
             on: container
-        ).map { _ in
+        ).map { res in
+            guard res.http.status == .ok else {
+                throw Abort(.internalServerError, reason: res.http.body.description)
+            }
+
             return path
         }
     }

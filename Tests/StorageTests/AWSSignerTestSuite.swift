@@ -280,6 +280,7 @@ extension AWSSignerTestSuite {
         //FIXME(Brett): handle throwing
         let canonicalHeaders = try! auth.sign(
             payload: .none,
+            contentType: "image/jpeg",
             method: method,
             path: path,
             query: query
