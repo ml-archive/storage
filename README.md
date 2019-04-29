@@ -141,7 +141,7 @@ let driver = try S3Driver(
     secretKey: "secret"
 )
 
-services.register(driver)
+services.register(driver, as: NetworkDriver.self)
 ```
 `bucket`, `accessKey`and `secretKey` are required by the S3 driver, while `template`, `host` and `region` are optional. `region` will default to `eu-west-1` and `host` will default to `s3.amazonaws.com`.
 
