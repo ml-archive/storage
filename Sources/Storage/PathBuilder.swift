@@ -4,7 +4,7 @@ public protocol PathBuilder {
 }
 
 public extension PathBuilder {
-    public func generateFolder(for mime: String?) -> String? {
+    func generateFolder(for mime: String?) -> String? {
         guard let mime = mime else { return nil }
         return mime.lowercased().hasPrefix("image") ? "images/original" : "data"
     }
