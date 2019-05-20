@@ -105,7 +105,7 @@ Storage.cdnBaseURL = "https://cdn.vapor.cloud"
 
 Here is how you generate the CDN path to a given asset.
 ```swift
-let cdnPath = Storage.getCDNPath(for: path)
+let cdnPath = try Storage.getCDNPath(for: path)
 ```
 
 If your CDN path is more involved than `cdnUrl` + `path`, you can build out Storage's optional completionhandler to override the default functionality.
