@@ -7,7 +7,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-spm-deps-{{ checksum "Package.swift" }}
+            - v5-spm-deps-{{ checksum "Package.swift" }}
       - run:
           name: Install CMySQL and CTLS
           command: |
@@ -27,7 +27,7 @@ jobs:
           command: |
             bash <(curl -s https://codecov.io/bash)
       - save_cache:
-          key: v3-spm-deps-{{ checksum "Package.swift" }}
+          key: v5-spm-deps-{{ checksum "Package.swift" }}
           paths:
             - .build
   Linux:
@@ -37,7 +37,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v4-spm-deps-{{ checksum "Package.swift" }}
+            - v6-spm-deps-{{ checksum "Package.swift" }}
       - run:
           name: Copy Package file
           command: cp Package.swift res
@@ -50,7 +50,7 @@ jobs:
           name: Restoring Package file
           command: mv res Package.swift
       - save_cache:
-          key: v4-spm-deps-{{ checksum "Package.swift" }}
+          key: v6-spm-deps-{{ checksum "Package.swift" }}
           paths:
             - .build
 workflows:
