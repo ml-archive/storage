@@ -1,0 +1,565 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/FileEntity.swift",
+      "line": 5,
+      "symbol": "FileEntity.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/FileEntity.swift",
+      "line": 6,
+      "symbol": "FileEntity.Error.missingFilename",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/FileEntity.swift",
+      "line": 7,
+      "symbol": "FileEntity.Error.missingFileExtension",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/FileEntity.swift",
+      "line": 8,
+      "symbol": "FileEntity.Error.malformedFileName",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 5,
+      "symbol": "NetworkDriver",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 6,
+      "symbol": "NetworkDriver.pathBuilder",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 9,
+      "symbol": "NetworkDriver.upload(entity:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 10,
+      "symbol": "NetworkDriver.get(path:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 11,
+      "symbol": "NetworkDriver.delete(path:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 14,
+      "symbol": "S3Driver",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 21,
+      "symbol": "S3Driver.pathBuilder",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 24,
+      "symbol": "S3Driver.init(bucket:host:accessKey:secretKey:region:pathTemplate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 41,
+      "symbol": "S3Driver.upload(bytes:fileName:fileExtension:mime:folder:access:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 61,
+      "symbol": "S3Driver.upload(entity:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 66,
+      "symbol": "S3Driver.upload(entity:access:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 110,
+      "symbol": "S3Driver.get(path:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/NetworkDriver.swift",
+      "line": 114,
+      "symbol": "S3Driver.delete(path:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 1,
+      "symbol": "PathBuilder",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 2,
+      "symbol": "PathBuilder.build(entity:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 3,
+      "symbol": "PathBuilder.generateFolder(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 6,
+      "symbol": "PathBuilder",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 7,
+      "symbol": "PathBuilder.generateFolder(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 13,
+      "symbol": "ConfigurablePathBuilder",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 16,
+      "symbol": "ConfigurablePathBuilder.init(template:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/PathBuilder.swift",
+      "line": 20,
+      "symbol": "ConfigurablePathBuilder.build(entity:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 6,
+      "symbol": "Storage",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 7,
+      "symbol": "Storage.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 8,
+      "symbol": "Storage.Error.missingNetworkDriver",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 9,
+      "symbol": "Storage.Error.cdnBaseURLNotSet",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 10,
+      "symbol": "Storage.Error.missingFileName",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 13,
+      "symbol": "Storage.cdnBaseURL",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Storage.swift",
+      "line": 15,
+      "symbol": "Storage.cdnPathBuilder",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 6,
+      "symbol": "Region",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 9,
+      "symbol": "Region.usEast1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 10,
+      "symbol": "Region.usEast2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 11,
+      "symbol": "Region.usWest1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 12,
+      "symbol": "Region.usWest2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 13,
+      "symbol": "Region.euWest1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 14,
+      "symbol": "Region.euWest2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 15,
+      "symbol": "Region.euWest3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 16,
+      "symbol": "Region.euCentral1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 17,
+      "symbol": "Region.apSouth1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 18,
+      "symbol": "Region.apSoutheast1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 19,
+      "symbol": "Region.apSoutheast2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 20,
+      "symbol": "Region.apNortheast1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 21,
+      "symbol": "Region.apNortheast2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 22,
+      "symbol": "Region.saEast1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 24,
+      "symbol": "Region.init(code:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 28,
+      "symbol": "Region.host",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 33,
+      "symbol": "Payload",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 34,
+      "symbol": "Payload.bytes(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 35,
+      "symbol": "Payload.unsigned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 36,
+      "symbol": "Payload.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 68,
+      "symbol": "String.awsQueryAllowed",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 72,
+      "symbol": "String.awsPathAllowed",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 77,
+      "symbol": "AccessControlList",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 78,
+      "symbol": "AccessControlList.privateAccess",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 79,
+      "symbol": "AccessControlList.publicRead",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 80,
+      "symbol": "AccessControlList.publicReadWrite",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 81,
+      "symbol": "AccessControlList.awsExecRead",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 82,
+      "symbol": "AccessControlList.authenticatedRead",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 83,
+      "symbol": "AccessControlList.bucketOwnerRead",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 84,
+      "symbol": "AccessControlList.bucketOwnerFullControl",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 87,
+      "symbol": "AWSSignatureV4",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 88,
+      "symbol": "AWSSignatureV4.Method",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 89,
+      "symbol": "AWSSignatureV4.Method.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 90,
+      "symbol": "AWSSignatureV4.Method.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 91,
+      "symbol": "AWSSignatureV4.Method.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 92,
+      "symbol": "AWSSignatureV4.Method.put",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 110,
+      "symbol": "AWSSignatureV4.init(service:host:region:accessKey:secretKey:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 221,
+      "symbol": "AWSSignatureV4",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 297,
+      "symbol": "S3",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 298,
+      "symbol": "S3.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 299,
+      "symbol": "S3.Error.unimplemented",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 300,
+      "symbol": "S3.Error.invalidPath",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 301,
+      "symbol": "S3.Error.invalidResponse(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 305,
+      "symbol": "S3.host",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 307,
+      "symbol": "S3.init(host:accessKey:secretKey:region:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/S3.swift",
+      "line": 323,
+      "symbol": "S3.upload(bytes:path:contentType:access:on:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/emilmarashliev/Projects/storage/Sources/Storage/Utilities/Trie.swift",
+      "line": 21,
+      "symbol": "Trie",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/emilmarashliev/Projects/storage"
+}
