@@ -25,7 +25,7 @@ public final class S3Driver: NetworkDriver {
         host: String = "s3.amazonaws.com",
         accessKey: String,
         secretKey: String,
-        region: Region = .euWest1,
+        region: S3.Region = .euWest1,
         pathTemplate: String = ""
     ) throws {
         self.pathBuilder = try ConfigurablePathBuilder(template: pathTemplate)

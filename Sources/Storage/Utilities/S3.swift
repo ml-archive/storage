@@ -3,31 +3,33 @@ import Vapor
 import Crypto
 import Foundation
 
-public struct Region {
-  let code: String
+extension S3 {
+    public struct Region {
+      let code: String
 
-  public static var usEast1: Region = .init(code: "us-east-1")
-  public static var usEast2: Region = .init(code: "us-east-2")
-  public static var usWest1: Region = .init(code: "us-west-1")
-  public static var usWest2: Region = .init(code: "us-west-2")
-  public static var euWest1: Region = .init(code: "eu-west-1")
-  public static var euWest2: Region = .init(code: "eu-west-2")
-  public static var euWest3: Region = .init(code: "eu-west-3")
-  public static var euCentral1: Region = .init(code: "eu-central-1")
-  public static var apSouth1: Region = .init(code: "ap-south-1")
-  public static var apSoutheast1: Region = .init(code: "ap-southeast-1")
-  public static var apSoutheast2: Region = .init(code: "ap-southeast-2")
-  public static var apNortheast1: Region = .init(code: "ap-northeast-1")
-  public static var apNortheast2: Region = .init(code: "ap-northeast-2")
-  public static var saEast1: Region = .init(code: "sa-east-1")
+      public static var usEast1: Region = .init(code: "us-east-1")
+      public static var usEast2: Region = .init(code: "us-east-2")
+      public static var usWest1: Region = .init(code: "us-west-1")
+      public static var usWest2: Region = .init(code: "us-west-2")
+      public static var euWest1: Region = .init(code: "eu-west-1")
+      public static var euWest2: Region = .init(code: "eu-west-2")
+      public static var euWest3: Region = .init(code: "eu-west-3")
+      public static var euCentral1: Region = .init(code: "eu-central-1")
+      public static var apSouth1: Region = .init(code: "ap-south-1")
+      public static var apSoutheast1: Region = .init(code: "ap-southeast-1")
+      public static var apSoutheast2: Region = .init(code: "ap-southeast-2")
+      public static var apNortheast1: Region = .init(code: "ap-northeast-1")
+      public static var apNortheast2: Region = .init(code: "ap-northeast-2")
+      public static var saEast1: Region = .init(code: "sa-east-1")
 
-  public init(code: String) {
-    self.code = code 
-  }
-  
-  public var host: String {
-    return "s3-\(code).amazonaws.com"
-  }
+      public init(code: String) {
+        self.code = code
+      }
+
+      public var host: String {
+        return "s3-\(code).amazonaws.com"
+      }
+    }
 }
 
 public enum Payload {
@@ -110,7 +112,7 @@ public struct AWSSignatureV4 {
     public init(
         service: String,
         host: String,
-        region: Region,
+        region: S3.Region,
         accessKey: String,
         secretKey: String
     ) {
@@ -308,7 +310,7 @@ public struct S3: Service {
         host: String,
         accessKey: String,
         secretKey: String,
-        region: Region
+        region: S3.Region
     ) {
         self.host = host
         signer = AWSSignatureV4(
