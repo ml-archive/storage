@@ -101,7 +101,7 @@ public class Storage {
      
         - Returns: The downloaded file.
      */
-    public static func get(path: String, on container: Container) throws -> Future<[UInt8]> {
+    public static func get(path: String, on container: Container) throws -> Future<Response> {
         let networkDriver = try container.make(NetworkDriver.self)
         return try networkDriver.get(path: path, on: container)
     }
