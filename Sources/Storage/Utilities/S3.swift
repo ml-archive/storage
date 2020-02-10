@@ -193,7 +193,7 @@ extension AWSSignatureV4 {
         hash: String
     ) {
         headers["Host"] = host
-        headers["x-amz-date"] = amzDate
+        headers["X-Amz-Date"] = amzDate
 
         if hash != "UNSIGNED-PAYLOAD" {
             headers["x-amz-content-sha256"] = hash
@@ -281,7 +281,7 @@ extension AWSSignatureV4 {
         )
 
         var requestHeaders: [String: String] = [
-            "x-amz-date": amzDate,
+            "X-Amz-Date": amzDate,
             "Content-Type": contentType,
             "x-amz-content-sha256": payloadHash,
             "Authorization": authorizationHeader,
