@@ -179,7 +179,7 @@ public struct AWSSignatureV4 {
         let date = unitTestDate ?? Date()
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.dateFormat = "YYYYMMdd"
+        dateFormatter.dateFormat = "yyyyMMdd"
         return dateFormatter.string(from: date)
     }
 }
@@ -191,7 +191,7 @@ extension AWSSignatureV4 {
         hash: String
     ) {
         headers["Host"] = host
-        headers["X-Amz-Date"] = amzDate
+        headers["x-amz-date"] = amzDate
 
         if hash != "UNSIGNED-PAYLOAD" {
             headers["x-amz-content-sha256"] = hash
@@ -279,7 +279,7 @@ extension AWSSignatureV4 {
         )
 
         var requestHeaders: [String: String] = [
-            "X-Amz-Date": amzDate,
+            "x-amz-date": amzDate,
             "Content-Type": contentType,
             "x-amz-content-sha256": payloadHash,
             "Authorization": authorizationHeader,
