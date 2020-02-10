@@ -28,7 +28,7 @@ Add `Storage` to the package dependencies (in your `Package.swift` file):
 ```swift
 dependencies: [
     ...,
-    .package(url: "https://github.com/nodes-vapor/storage.git", from: "1.0.0-beta")
+    .package(url: "https://github.com/nodes-vapor/storage.git", from: "1.0.0")
 ]
 ```
 
@@ -274,8 +274,6 @@ Returns: 123e4567-e89b-12d3-a456-426655440000
 ## 🏆 Credits
 
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodesagency.com).
-The package owner for this project is [Brett](https://github.com/brettRToomey).
-
 
 ## 📄 License
 
