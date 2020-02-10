@@ -298,7 +298,7 @@ public struct S3: Service {
     public enum Error: Swift.Error {
         case unimplemented
         case invalidPath
-        case invalidResponse(HTTPStatus)
+        case invalidResponse(status: HTTPStatus, reason: String)
     }
 
     let signer: AWSSignatureV4
@@ -350,7 +350,13 @@ public struct S3: Service {
         req.http.headers = headers
         req.http.body = HTTPBody(data: bytes)
         req.http.url = url
-        return client.send(req)
+        return client.send(req).map { res in
+            let http = res.http
+            guard http.status == .ok else {
+                throw Error.invalidResponse(status: http.status, reason: http.body.description)
+            }
+            return res
+        }
     }
     
     public func get(
