@@ -28,7 +28,7 @@ Add `Storage` to the package dependencies (in your `Package.swift` file):
 ```swift
 dependencies: [
     ...,
-    .package(url: "https://github.com/nodes-vapor/storage.git", from: "1.0.0-beta")
+    .package(url: "https://github.com/nodes-vapor/storage.git", from: "1.0.0")
 ]
 ```
 
@@ -88,6 +88,8 @@ Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png", on
 
 ## Download a file ✅
 
+> NB: This is not implemented yet (see https://github.com/nodes-vapor/storage/issues/47)
+
 To download a file that was previously uploaded you simply use the generated path.
 ```swift
 // download image as `Foundation.Data`
@@ -120,7 +122,9 @@ Storage.cdnPathBuilder = { baseURL, path in
 
 ## Delete a file ❌
 
-Deleting a file using this package isn't the recommended way to handle removal, but is still possible.
+> NB: This is not implemented yet (see https://github.com/nodes-vapor/storage/issues/47)
+
+Deleting a file can be done as follows.
 ```swift
 try Storage.delete("/images/profile.png")
 ```
@@ -270,8 +274,6 @@ Returns: 123e4567-e89b-12d3-a456-426655440000
 ## 🏆 Credits
 
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodesagency.com).
-The package owner for this project is [Brett](https://github.com/brettRToomey).
-
 
 ## 📄 License
 

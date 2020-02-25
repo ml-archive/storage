@@ -5,28 +5,27 @@ import Foundation
 public protocol NetworkDriver: Service {
     var pathBuilder: PathBuilder { get set }
 
-    @discardableResult
     func upload(entity: inout FileEntity, on container: Container) throws -> Future<String>
     func get(path: String, on container: Container) throws -> Future<Response>
     func delete(path: String, on container: Container) throws -> Future<Void>
 }
 
 public final class S3Driver: NetworkDriver {
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case nilFileUpload
         case missingFileExtensionAndType
         case pathMissingForwardSlash
     }
 
     public var pathBuilder: PathBuilder
-    var s3: S3
+    let s3: S3
 
     public init(
         bucket: String,
         host: String = "s3.amazonaws.com",
         accessKey: String,
         secretKey: String,
-        region: Region = .euWest1,
+        region: S3.Region = .euWest1,
         pathTemplate: String = ""
     ) throws {
         self.pathBuilder = try ConfigurablePathBuilder(template: pathTemplate)
@@ -58,22 +57,26 @@ public final class S3Driver: NetworkDriver {
         return try upload(entity: &entity, access: access, on: container)
     }
 
-    public func upload(entity: inout FileEntity, on container: Container) throws -> Future<String> {
-        return try upload(entity: &entity, access: .publicRead, on: container)
+    public func upload(
+        entity: inout FileEntity,
+        on container: Container
+    ) throws -> Future<String> {
+        return try self.upload(entity: &entity, access: .publicRead, on: container)
     }
 
-    @discardableResult
-    public func upload(entity: inout FileEntity, access: AccessControlList, on container: Container) throws -> Future<String> {
+    public func upload(
+        entity: inout FileEntity,
+        access: AccessControlList,
+        on container: Container
+    ) throws -> Future<String> {
         guard let bytes = entity.bytes else {
             throw Error.nilFileUpload
         }
 
         entity.sanitize()
 
-        if entity.fileExtension == nil {
-            guard entity.loadFileExtensionFromMime() else {
-                throw Error.missingFileExtensionAndType
-            }
+        guard entity.fileExtension != nil || entity.loadFileExtensionFromMime() else {
+            throw Error.missingFileExtensionAndType
         }
 
         if entity.mime == nil {
@@ -98,20 +101,15 @@ public final class S3Driver: NetworkDriver {
             contentType: mime,
             access: access,
             on: container
-        ).map { res in
-            guard res.http.status == .ok else {
-                throw Abort(.internalServerError, reason: res.http.body.description)
-            }
-
-            return path
-        }
+        ).transform(to: path)
     }
 
     public func get(path: String, on container: Container) throws -> Future<Response> {
-        return try s3.get(path: path, on: container).map { $0}
+        return try s3.get(path: path, on: container).map { $0 }
     }
 
     public func delete(path: String, on container: Container) throws -> Future<Void> {
-        return container.future()
+        #warning("Not implemented yet")
+        fatalError("Missing implementation for NetworkDriver.delete(path:on:) on S3Driver.")
     }
 }
