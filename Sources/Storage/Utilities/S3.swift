@@ -390,6 +390,36 @@ public struct S3: Service {
         req.http.url = url
         return client.send(req)
     }
+
+    public func delete(
+        path: String,
+        contentType: String = "application/x-www-form-urlencoded; charset=utf-8",
+        access: AccessControlList = .publicRead,
+        on container: Container
+    ) throws -> Future<Response> {
+        guard let url = URL(string: generateURL(for: path)) else {
+            throw Error.invalidPath
+        }
+
+        let signedHeaders = try signer.sign(
+            contentType: contentType,
+            method: .delete,
+            path: path,
+            headers: ["x-amz-acl": access.rawValue]
+        )
+
+        var headers: HTTPHeaders = [:]
+        signedHeaders.forEach {
+            headers.add(name: $0.key, value: $0.value)
+        }
+
+        let client = try container.client()
+        let req = Request(using: container)
+        req.http.method = .DELETE
+        req.http.headers = headers
+        req.http.url = url
+        return client.send(req)
+    }
 }
 
 extension S3 {

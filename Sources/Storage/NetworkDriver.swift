@@ -7,7 +7,7 @@ public protocol NetworkDriver: Service {
 
     func upload(entity: inout FileEntity, on container: Container) throws -> Future<String>
     func get(path: String, on container: Container) throws -> Future<Response>
-    func delete(path: String, on container: Container) throws -> Future<Void>
+    func delete(path: String, on container: Container) throws -> Future<Response>
 }
 
 public final class S3Driver: NetworkDriver {
@@ -108,8 +108,7 @@ public final class S3Driver: NetworkDriver {
         return try s3.get(path: path, on: container).map { $0 }
     }
 
-    public func delete(path: String, on container: Container) throws -> Future<Void> {
-        #warning("Not implemented yet")
-        fatalError("Missing implementation for NetworkDriver.delete(path:on:) on S3Driver.")
+    public func delete(path: String, on container: Container) throws -> Future<Response> {
+        return try s3.delete(path: path, on: container).map { $0 }
     }
 }
