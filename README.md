@@ -88,8 +88,6 @@ Storage.upload(url: "http://mysite.com/myimage.png", fileName: "profile.png", on
 
 ## Download a file ✅
 
-> NB: This is not implemented yet (see https://github.com/nodes-vapor/storage/issues/47)
-
 To download a file that was previously uploaded you simply use the generated path.
 ```swift
 // download image as `Foundation.Data`
@@ -122,13 +120,10 @@ Storage.cdnPathBuilder = { baseURL, path in
 
 ## Delete a file ❌
 
-> NB: This is not implemented yet (see https://github.com/nodes-vapor/storage/issues/47)
-
 Deleting a file can be done as follows.
 ```swift
 try Storage.delete("/images/profile.png")
 ```
-
 
 ## Configuration ⚙
 

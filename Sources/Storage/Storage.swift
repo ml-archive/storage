@@ -142,7 +142,7 @@ public class Storage {
         - Parameters:
             - path: The path of the file to be deleted.
      */
-    public static func delete(path: String, on container: Container) throws -> Future<Void> {
+    public static func delete(path: String, on container: Container) throws -> Future<Response> {
         let networkDriver = try container.make(NetworkDriver.self)
         return try networkDriver.delete(path: path, on: container)
     }
