@@ -5,9 +5,18 @@ import Foundation
 public protocol NetworkDriver: Service {
     var pathBuilder: PathBuilder { get set }
 
-    func upload(entity: inout FileEntity, access: AccessControlList, on container: Container) throws -> Future<String>
+    func upload(entity: inout FileEntity, access: AccessControlList?, on container: Container) throws -> Future<String>
     func get(path: String, on container: Container) throws -> Future<Response>
     func delete(path: String, on container: Container) throws -> Future<Response>
+}
+
+extension NetworkDriver {
+    func upload(
+        entity: inout FileEntity,
+        on container: Container
+    ) throws -> Future<String> {
+        try upload(entity: &entity, access: nil, on: container)
+    }
 }
 
 public final class S3Driver: NetworkDriver {
@@ -59,7 +68,7 @@ public final class S3Driver: NetworkDriver {
 
     public func upload(
         entity: inout FileEntity,
-        access: AccessControlList = .publicRead,
+        access: AccessControlList?,
         on container: Container
     ) throws -> Future<String> {
         guard let bytes = entity.bytes else {
@@ -92,7 +101,7 @@ public final class S3Driver: NetworkDriver {
             bytes: Data(bytes),
             path: path,
             contentType: mime,
-            access: access,
+            access: access ?? .publicRead,
             on: container
         ).transform(to: path)
     }
