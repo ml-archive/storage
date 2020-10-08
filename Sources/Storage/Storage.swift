@@ -62,7 +62,7 @@ public class Storage {
             mime: mime
         )
 
-        return try upload(entity: &entity, on: container)
+        return try upload(entity: &entity, access: access, on: container)
     }
 
     /**
@@ -92,6 +92,7 @@ public class Storage {
             fileExtension: fileExtension,
             mime: type,
             folder: folder,
+            access: access,
             on: container
         )
     }
